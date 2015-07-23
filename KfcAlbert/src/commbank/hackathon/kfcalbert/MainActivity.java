@@ -10,13 +10,17 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener{
 	
 	private static String tag = ".MainActivity";
 	private Thread pollingThread;
 	private Poller poller;
+	private Button confirmButton;
 	
 	private ListView orderList;
 	
@@ -33,6 +37,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		Log.d(tag, "Started KFCAlbert");
 		
+		getActionBar().hide();
+		
 		pollingThread = new Thread(poller = new Poller(mHandler));
 		orderList = (ListView) findViewById(R.id.itemList);
 		
@@ -42,7 +48,9 @@ public class MainActivity extends Activity {
 		
 		orderList.setAdapter(new OrderListAdapter(this, R.layout.order_item, items));
 		
-		getActionBar().hide();
+		confirmButton = (Button) findViewById(R.id.btn_confirm_order);
+		confirmButton.setOnClickListener(this);
+		
 	}
 
 	@Override
@@ -80,5 +88,15 @@ public class MainActivity extends Activity {
 		}
 		
 		super.onStop();
+	}
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		switch(id){
+		case R.id.btn_confirm_order:
+			Log.d(tag,"Order Confirmed");
+			break;
+		}
 	}
 }

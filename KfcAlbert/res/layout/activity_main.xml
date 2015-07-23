@@ -15,13 +15,21 @@
         android:textColor="@android:color/white"
         android:textSize="28sp"
         android:textStyle="bold" />
+    
+    <TextView 
+        android:id="@+id/border"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="2dp"
+        android:layout_width="fill_parent"
+        android:background="@android:color/white"
+        android:layout_height="1dp" />
 
     <ListView
         android:id="@+id/itemList"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_above="@+id/btn_confirm_order"
-        android:layout_below="@+id/textView1" >
+        android:layout_below="@+id/border" >
     </ListView>
 
     <Button
