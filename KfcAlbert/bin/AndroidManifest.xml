@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity 
+            android:name=".QRActivity"
+            android:label="QRActivity" />
     </application>
     
      <meta-data android:name="application-type" android:value="vaa_merchant"/>
