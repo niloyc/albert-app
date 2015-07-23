@@ -1,16 +1,28 @@
 package com.company.mypaymentapplication.qrcode;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.android.Contents;
+import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 
 public class QRActivity extends ActionBarActivity {
@@ -63,5 +75,31 @@ public class QRActivity extends ActionBarActivity {
         }
         TextView myAwesomeTextView = (TextView)findViewById(R.id.scan_content);
         myAwesomeTextView.setText(result);
+    }
+
+    // Called upon payment button click.
+    public void onButtonClick2(View view){
+        Log.d("mytag", "Button2 clicked.");
+        String str = "a man's anus";
+        BitMatrix result;
+        try {
+            result = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, 500, 500, null);
+        } catch (Exception ex) {
+            // Unsupported format
+            return;
+        }
+        //
+        int w = result.getWidth();
+        int h = result.getHeight();
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
+        for (int x = 0; x < w; x++){
+            for (int y = 0; y < h; y++){
+                bmp.setPixel(x, y, result.get(x,y) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        ImageView qr_image = (ImageView) findViewById(R.id.image);
+        qr_image.setImageBitmap(bmp);
+
+        Log.d("mytag", "Button2 click function ended.");
     }
 }
