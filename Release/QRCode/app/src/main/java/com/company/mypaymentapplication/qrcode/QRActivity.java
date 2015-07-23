@@ -1,41 +1,37 @@
 package com.company.mypaymentapplication.qrcode;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.android.Contents;
-import com.google.zxing.common.BitMatrix;
+import com.aevi.payment.PaymentRequest;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.google.zxing.qrcode.QRCodeWriter;
+
+import java.lang.ref.ReferenceQueue;
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class QRActivity extends ActionBarActivity {
+public class QRActivity extends ActionBarActivity{
+
+    static final int REWARD_REQUEST = 1;
+    static final int PAY_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
-        TextView myAwesomeTextView = (TextView)findViewById(R.id.scan_content);
+        TextView myAwesomeTextView = (TextView) findViewById(R.id.scan_content);
         myAwesomeTextView.setText("-");
     }
 
@@ -62,7 +58,7 @@ public class QRActivity extends ActionBarActivity {
     }
 
     // Called upon payment button click.
-    public void onButtonClick(View view){
+    public void onButtonClick(View view) {
         Log.d("mytag", "Button clicked.");
         IntentIntegrator integrator = new IntentIntegrator(QRActivity.this);
         integrator.initiateScan();
@@ -71,6 +67,16 @@ public class QRActivity extends ActionBarActivity {
 
     // Callback function for scan result.
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if(requestCode == REWARD_REQUEST){
+            pay();
+            return;
+        }
+
+        if(requestCode == PAY_REQUEST){
+            onBackPressed();
+        }
+
+
         Log.d("mytag", "Activity result found.");
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         String result = "Did not work.";
@@ -85,24 +91,31 @@ public class QRActivity extends ActionBarActivity {
                 // TODO Auto-generated method stub
 
             }
+
             @Override
             public void success(Customer arg0, Response arg1) {
                 Log.i("App", "Individual customer: " + arg0.getName());
             }
         });
         // Update text.
-        TextView myAwesomeTextView = (TextView)findViewById(R.id.scan_content);
+        TextView myAwesomeTextView = (TextView) findViewById(R.id.scan_content);
         myAwesomeTextView.setText(result);
 
         // Go to YOU CLUCKING LEGEND PAGE
-        startActivity(new Intent(this, RewardActivity.class));
+        startActivityForResult(new Intent(this, RewardActivity.class), REWARD_REQUEST);
+    }
+
+    public void pay(){
+        // Construct a new payment for $20.00.
+        PaymentRequest payment = new PaymentRequest(new BigDecimal("20.00"));
+        payment.setCurrency(Currency.getInstance("AUD"));
+
+        // Launch the Payment app.
+        startActivityForResult(payment.createIntent(), PAY_REQUEST);
     }
 
     // Called upon skip.
-    public void onButtonClick2(View view){
-        Log.d("mytag", "Button2 clicked.");
-
-
-        Log.d("mytag", "Button2 click function ended.");
+    public void onButtonClick2(View view) {
+        pay();
     }
 }

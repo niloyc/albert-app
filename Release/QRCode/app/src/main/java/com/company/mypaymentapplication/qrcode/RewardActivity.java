@@ -1,9 +1,14 @@
 package com.company.mypaymentapplication.qrcode;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 
 public class RewardActivity extends ActionBarActivity {
@@ -36,18 +41,18 @@ public class RewardActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*// Called upon payment button click.
+    //Called upon payment button click.
     public void onButtonClick(View view){
         Log.d("mytag", "Button clicked.");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Add the buttons
-        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
         });
-        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog - do nothing
             }
@@ -57,7 +62,7 @@ public class RewardActivity extends ActionBarActivity {
         AlertDialog dialog = builder.create();
 
         ImageView image = new ImageView(this);
-        image.setImageResource(R.drawable.reward);
+        image.setImageResource(R.drawable.rewards);
 
         dialog.setView(image);
 
@@ -65,5 +70,5 @@ public class RewardActivity extends ActionBarActivity {
         dialog.getWindow().setLayout(750, 605);
 
         Log.d("mytag", "Button click function ended.");
-    }*/
+    }
 }
