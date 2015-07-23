@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_red_dark"
+    tools:context="commbank.hackathon.kfcalbert.MainActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="bottom|left"
+        android:paddingLeft="10dp"
+        android:text="Order"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+    
+    <TextView 
+        android:id="@+id/border"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="2dp"
+        android:layout_width="fill_parent"
+        android:background="@android:color/white"
+        android:layout_height="1dp" />
+
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_above="@+id/btn_confirm_order"
+        android:layout_below="@+id/border" >
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_confirm_order"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#AA0000"
+        android:gravity="center"
+        android:text="Confirm Order"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
