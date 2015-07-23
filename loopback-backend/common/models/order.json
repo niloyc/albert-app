@@ -1,0 +1,29 @@
+{
+  "name": "Order",
+  "plural": "Orders",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "items": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    },
+    "paid": {
+      "type": "boolean",
+      "required": true
+    },
+    "discount_amount": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
