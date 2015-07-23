@@ -48,6 +48,6 @@
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:onClick="onButtonClick"/>
+        android:onClick="onButtonClick2"/>
 
 </RelativeLayout>

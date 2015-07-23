@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class OrderListAdapter extends ArrayAdapter<OrderItem> {
@@ -42,6 +43,7 @@ public class OrderListAdapter extends ArrayAdapter<OrderItem> {
             TextView name = (TextView) v.findViewById(R.id.name);
             TextView data = (TextView) v.findViewById(R.id.data);
             TextView price = (TextView) v.findViewById(R.id.price);
+            ImageView icon = (ImageView) v.findViewById(R.id.img_item);
 
             if (name != null)
                 name.setText(item.getName());
