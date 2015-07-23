@@ -9,7 +9,11 @@
   "properties": {
     "items": {
       "type": [
-        "object"
+        {
+	"name": {"type": "string","required": true},
+	"quantity": {"type": "number","required": true},
+	"price": {"type": "number","required": true}
+	}
       ],
       "required": true
     },
@@ -17,8 +21,8 @@
       "type": "boolean",
       "required": true
     },
-    "discount_amount": {
-      "type": "number",
+    "customer_id": {
+      "type": "string",
       "required": true
     }
   },
