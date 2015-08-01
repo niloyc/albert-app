@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Gratis UI-builder</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        img {
+            margin: 0;
+            padding: 0;
+            z-index: 0;
+        }
+        #container {
+            position: relative;
+            padding: 0;
+            margin: 0;
+        }
+        #overlay {
+            position: absolute;
+            z-index: 1;
+            top: 172px;
+            left: 140px;
+            width: 644px;
+            height: 1027px;
+            background-color: indianred;
+        }
+        #titlebar {
+            width: 100%;
+            height: 50px;
+            background-color: red;
+        }
+    </style>
+</head>
+    
+    <body>
+        <div id="container">
+            <div id="overlay">
+                <div id="titlebar">
+
+                </div>
+                <div id="logo">
+
+                </div>
+            </div>
+            <img src="images/albert.png" id="albert_img" />
+        </div>
+        
+        <script>
+            var albert_img = document.getElementById("albert_img");
+            var container = document.getElementById("container");
+            var overlay = document.getElementById("overlay");
+            
+            var scale = document.body.clientHeight / 1432;
+            
+            container.style.left = (document.body.clientWidth / 2) - (920 * scale)/2;
+            
+            container.style.height = document.body.clientHeight; 
+            albert_img.style.height = document.body.clientHeight;
+            albert_img.style.width = 920 * scale;
+            container.style.width = 920 * scale;
+            
+            overlay.style.width = 644 * scale;
+            overlay.style.height = 1027 * scale;
+            overlay.style.left = 140 * scale;
+            overlay.style.top = 169 * scale;
+            
+        </script>
+    </body>
+
+</html>

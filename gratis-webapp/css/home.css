@@ -1,0 +1,80 @@
+body {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    padding-top: 80pt;
+}
+
+footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar {
+    background-color: rgb(250, 250, 250);
+}
+
+.navbar li a {
+    padding: 0;
+    padding-left: 20pt;
+    padding-right: 20pt;
+    line-height: 80pt;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.navbar-right a {
+    //color: white;
+    //background-color: rgb(200, 200, 250);
+}
+
+.navbar-brand {
+    padding: 0;
+    margin: 0;
+    padding-left: 20pt;
+    padding-right: 20pt;
+    height: 75pt;
+    text-align: left;
+    font-size: 70pt;
+    line-height: 70pt;
+    font-family: 'Slabo 27px', serif;
+    color: rgba(255, 255, 255, 0.1);
+    background-image: url(https://c2.staticflickr.com/4/3807/10388498913_51fd66243e_b.jpg);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+}
+
+.jumbotron {
+    padding-right: 40%;
+    margin-bottom: 0;
+    width: 100%;
+    height: 50%;
+    position: relative;
+    min-height: 500px;
+    padding-top: 150px;
+    background-image: url(https://c2.staticflickr.com/4/3807/10388498913_51fd66243e_b.jpg);
+    background-blend-mode: lighten;
+    background-size: 100%;
+}
+
+#albert-div {
+    background-image: url(../images/albert2.png);
+    background-position: right;
+    background-size: 50%;
+    background-repeat: no-repeat;
+}
+
+#analytics-div {
+    background-color: rgb(180, 200, 200);
+}
+
+#loyalty-div {
+    background-color: rgb(230, 180, 180);
+}
+
+#custom-div {
+    background-color: rgb(150, 180, 200);
+    background-image: url(https://c2.staticflickr.com/4/3807/10388498913_51fd66243e_b.jpg);
+    background-blend-mode: color;
+}
