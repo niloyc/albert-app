@@ -6,10 +6,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>gratis | give freely&trade;</title>
-        <link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/home.css">
-
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -22,18 +25,23 @@
     <body>
         <nav class="navbar navbar-fixed-top">
             <div class="navbar-header">
-                <a class="navbar-brand">gratis</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="caret"></span>
+                </button>
+                <a href class="navbar-brand">gratis</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href>Simulator</a></li>
-                <li><a href>Accessories</a></li>
-                <li><a href>Support</a></li>
-                <li><a href>About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href>Log in</a></li>
-                <li><a href>Sign up</a></li>
-            </ul>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href>Simulator</a></li>
+                    <li><a href>Accessories</a></li>
+                    <li><a href>Support</a></li>
+                    <li><a href>About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
+                    <li><a href><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+                </ul>
+            </div>
         </nav>
         <div id="albert-div" class="jumbotron">
             <h1>A complete POS solution</h1>

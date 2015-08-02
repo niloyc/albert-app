@@ -37,7 +37,7 @@ footer {
     text-align: left;
     font-size: 70pt;
     line-height: 70pt;
-    font-family: 'Slabo 27px', serif;
+    font-family: 'Lato', sans-serif;
     color: rgba(255, 255, 255, 0.1);
     background-image: url(https://c2.staticflickr.com/4/3807/10388498913_51fd66243e_b.jpg);
     -webkit-background-clip: text;
@@ -63,6 +63,7 @@ footer {
     background-position: right;
     background-size: 50%;
     background-repeat: no-repeat;
+    background-blend-mode: normal;
 }
 
 #analytics-div {
