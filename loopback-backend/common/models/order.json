@@ -10,10 +10,19 @@
     "items": {
       "type": [
         {
-	"name": {"type": "string","required": true},
-	"quantity": {"type": "number","required": true},
-	"price": {"type": "number","required": true}
-	}
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "quantity": {
+            "type": "number",
+            "required": true
+          },
+          "price": {
+            "type": "number",
+            "required": true
+          }
+        }
       ],
       "required": true
     },

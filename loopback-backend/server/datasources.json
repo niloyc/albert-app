@@ -14,5 +14,13 @@
   "CustomerDB": {
     "name": "CustomerDB",
     "connector": "mongodb"
+  },
+  "ItemsDB": {
+    "name": "ItemsDB",
+    "connector": "mongodb"
+  },
+  "CustomDB": {
+    "name": "CustomDB",
+    "connector": "mongodb"
   }
 }

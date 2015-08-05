@@ -39,5 +39,13 @@
   "Customer": {
     "dataSource": "CustomerDB",
     "public": true
+  },
+  "Item": {
+    "dataSource": "ItemsDB",
+    "public": true
+  },
+  "Custom": {
+    "dataSource": "CustomDB",
+    "public": true
   }
 }
