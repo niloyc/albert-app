@@ -30,9 +30,11 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.1'
+
     // Zxing libraries
     compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
     compile 'com.embarkmobile:zxing-android-integration:2.0.0@aar'
+    compile 'com.sothree.slidinguppanel:library:2.0.+'
     compile 'com.google.zxing:core:3.0.1'
     compile files('libs/aevi-api-2.3.0.jar')
     compile files('libs/okhttp-2.4.0.jar')
