@@ -13,6 +13,9 @@
         $scope.age_labels = ['18-25', '25-30', '30-40', '40-50', '50+'];
         $scope.age_data = [500, 400, 600, 200, 200];
         
+        $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+        $scope.num_customers = [[50, 100, 200, 400, 450, 600, 700]];
+        
         $http.get('http://scribbler.io:3000/api/customers/').success(function(data) {
             $scope.customers = data;
         });
