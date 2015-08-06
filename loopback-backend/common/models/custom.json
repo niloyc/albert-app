@@ -1,0 +1,58 @@
+{
+  "name": "Custom",
+  "plural": "Customs",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "background": {
+      "type": "string",
+      "required": true
+    },
+    "foreground": {
+      "type": "string",
+      "required": true
+    },
+    "buttons": {
+      "type": "string",
+      "required": true
+    },
+    "tile-cat": {
+      "type": "string",
+      "required": true
+    },
+    "tile-item": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "type": "string",
+      "required": true
+    },
+    "offer": {
+      "type": [
+        {
+	"url": {
+		"type": "string",
+		"required": true
+	},
+	"description": {
+		"type": "string",
+		"required": true
+	}
+	}
+      ],
+      "required": true
+    },
+    "reward-img": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
