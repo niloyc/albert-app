@@ -12,6 +12,7 @@
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
         
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -38,34 +39,69 @@
                     <li><a href>About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="data-vis.html"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
+                    <li><a href="dashboard.html"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
                     <li><a href><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
                 </ul>
             </div>
         </nav>
-        <div id="albert-div" class="jumbotron">
-            <h1>A complete POS solution</h1>
-            <p>Albert + cash tray, backed by Commonwealth Bank</p>
-            <p><a class="btn btn-primary btn-lg" href role="button">Try out the gratis simulator</a></p>
-        </div>
-        <div id="analytics-div" class="jumbotron">
-            <h1>Analytics</h1>
-            <p>Gain insights into your customers</p>
-            <p><a class="btn btn-primary btn-lg" href role="button">Learn more</a></p>
-        </div>
-        <div id="loyalty-div" class="jumbotron">
-            <h1>Loyalty</h1>
-            <p>Reward returning customers</p>
-            <p><a class="btn btn-primary btn-lg" href role="button">Learn more</a></p>
-        </div>
-        <div id="custom-div" class="jumbotron">
-            <h1>Completely customisable</h1>
-            <p>Match your brand</p>
-            <p><a class="btn btn-primary btn-lg" href role="button">Learn more</a></p>
+        <div id="content">
+            <div id="albert-div" class="jumbotron">
+                <h1>A complete POS solution</h1>
+                <p>Albert + cash tray, backed by Commonwealth Bank</p>
+                <p><a class="btn btn-primary btn-lg" href role="button">Try out the gratis simulator</a></p>
+            </div>
+            <div id="analytics-div" class="jumbotron">
+                <canvas id="analytics-example"></canvas>
+                <h1>Detailed Analytics</h1>
+                <p>Gain insights into your customers</p>
+                <p><a class="btn btn-primary btn-lg" href role="button">Learn more</a></p>
+            </div>
+            <div id="loyalty-div" class="jumbotron">
+                <h1>Loyalty</h1>
+                <p>Reward returning customers</p>
+                <p><a class="btn btn-primary btn-lg" href role="button">Learn more</a></p>
+            </div>
+            <div id="custom-div" class="jumbotron">
+                <div style="position: absolute; width: 40%; height: 80%; left: 5%; top: 10%; background-color: white; opacity: 0.9;">
+                    <div class="custom-header" id="customHeader">
+                    </div>
+                    <div style="position: absolute; top: 70pt; background-color: gray; width: 40%; height: 12pt; left: 30%;">
+                    </div>
+                    <div style="position: absolute; top: 150pt; background-color: gray; width: 40%; height: 12pt; left: 30%;">
+                    </div>
+                    <div style="position: absolute; top: 230pt; background-color: gray; width: 40%; height: 12pt; left: 30%;">
+                    </div>
+                </div>
+                <h1>Completely customisable</h1>
+                <p>Match your brand</p>
+                <p><a class="btn btn-primary btn-lg" href role="button">Learn more</a></p>
+            </div>
         </div>
         <footer>
             Copyright &copy; 2015 gratis
         </footer>
+        <script>
+            var data = {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                    {
+                        label: "Sales",
+                        fillColor: "rgba(51,122,183,0.5)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [30, 59, 80, 81, 90, 110, 140]
+                    }
+                ]
+            };
+            window.onload = function() {
+                var ctx = document.getElementById("analytics-example").getContext("2d");
+                var chart = new Chart(ctx).Line(data, {scaleLineColor: "rgba(0,0,0,1)"});
+                setInterval(function() {$('#customHeader').toggleClass("custom-header-trans");}, 2000);
+            }
+        </script>
     </body>
 
 </html>

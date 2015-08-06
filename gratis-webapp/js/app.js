@@ -10,6 +10,9 @@
         $scope.series = ['Series A'];
         $scope.point_data = [[10, 50, 100, 60, 30, 40]];
         
+        $scope.age_labels = ['18-25', '25-30', '30-40', '40-50', '50+'];
+        $scope.age_data = [500, 400, 600, 200, 200];
+        
         $http.get('http://scribbler.io:3000/api/customers/').success(function(data) {
             $scope.customers = data;
         });
@@ -24,6 +27,7 @@
     
     app.controller('SidebarController', function() {
         this.tab = 1;
+        this.subtab = 1;
         
         this.setTab = function(newValue) {
             this.tab = newValue;
@@ -31,6 +35,14 @@
         
         this.isSet = function(tabName) {
             return this.tab === tabName;
+        }
+        
+        this.setSubtab = function(newValue) {
+            this.subtab = newValue;
+        }
+        
+        this.isSubtabSet = function(tabName) {
+            return this.subtab === tabName;
         }
     });
     
