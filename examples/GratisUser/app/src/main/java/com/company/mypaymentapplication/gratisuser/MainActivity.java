@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +36,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private String user_id = "";
 
+    private NfcAdapter mAdapter;
+    private NdefMessage mMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,19 +51,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btn_link_qr.setOnClickListener(this);
         // Load preferences and ID.
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        user_id = settings.getString("user_id", "");
+        user_id = settings.getString("user_id", "default");
         Log.d(MainActivity.tag, "ma i think user_id is " + user_id);
         // Set the offer list.
         ListView offerList = (ListView) findViewById(R.id.list_offers);
             // this should be from a REST call:
         List<OfferItem> offers = new LinkedList<OfferItem>();
-        offers.add(new OfferItem("Offer 1"));
-        offers.add(new OfferItem("Offer 2"));
-        offers.add(new OfferItem("Offer 3"));
+        offers.add(new OfferItem("Free coffee @random coffee place", "0.5km away", getResources().getDrawable(R.drawable.coffee_icon)));
+        offers.add(new OfferItem("Free upgrade when you buy random stuff", "1.2km away", getResources().getDrawable(R.drawable.drink_icon)));
+        offers.add(new OfferItem("Random offer of random nearby place", "3.3km away", getResources().getDrawable(R.drawable.random_icon)));
             // end
         offerList.setAdapter(new OfferListAdapter(getApplicationContext(),
                 R.layout.offer_item,
                 offers));
+
+
+        mAdapter = NfcAdapter.getDefaultAdapter(this);
+        mMessage = new NdefMessage(NdefRecord.createMime("text/plain", user_id.getBytes()));
+        mAdapter.setNdefPushMessage(mMessage, this);
     }
 
     @Override

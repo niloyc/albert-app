@@ -42,9 +42,20 @@ public class OfferListAdapter extends ArrayAdapter<OfferItem> {
         final OfferItem item = items.get(position);
         if (item != null) {   //Put the name/data and icon according to the file data
             TextView name = (TextView) v.findViewById(R.id.text_item_name);
+            TextView location = (TextView) v.findViewById(R.id.text_item_location);
+            ImageView icon = (ImageView) v.findViewById(R.id.text_item_icon);
 
             if (name != null)
                 name.setText(item.getName());
+
+            if (location != null)
+                location.setText(item.getLocation());
+
+            if(icon!=null){
+                icon.setImageDrawable(item.getIcon());
+                icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            }
+
         }
 
         return v;

@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, Niloy"
+        android:text="Hello, Daniel"
         android:id="@+id/txt_hello"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -56,13 +56,16 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#E65100"
         android:text="Offers nearby,"
         android:id="@+id/txt_offers"
         android:layout_marginTop="30dp"
         android:textColor="#ffffffff"
         android:textSize="25dp"
+        android:paddingLeft="5dp"
+        android:textStyle="bold|italic"
         android:layout_below="@+id/btn_disp_qr"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -74,6 +77,15 @@
         android:layout_below="@+id/txt_offers"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:background="#ffffffff" />
+        android:layout_marginTop="5dp"
+        android:layout_above="@+id/img_gratis_logo"
+        android:background="#fff2743c" />
+
+    <ImageView
+        android:id="@+id/img_gratis_logo"
+        android:layout_alignParentBottom="true"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:src="@drawable/gratis_logo"/>
 
 </RelativeLayout>
