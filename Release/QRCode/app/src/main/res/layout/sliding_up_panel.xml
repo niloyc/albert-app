@@ -31,7 +31,7 @@
                 android:paddingLeft="10dp"
                 android:text="Items"
                 android:textColor="@android:color/white"
-                android:background="#f5846c"
+                android:background="#E65100"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 

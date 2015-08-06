@@ -13,7 +13,7 @@
         android:paddingLeft="10dp"
         android:text="Order"
         android:textColor="@android:color/white"
-        android:background="#f5846c"
+        android:background="#E65100"
         android:textSize="28sp"
         android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
 
     
     <LinearLayout
-        android:background="#888888"
+        android:background="#E65100"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_alignParentBottom="true"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_margin="5dp"
             android:layout_height="80dp"
-            android:background="#f5846c"
+            android:background="#f2743c"
             android:gravity="center"
             android:text="Confirm Order"
             android:textColor="@android:color/white"
