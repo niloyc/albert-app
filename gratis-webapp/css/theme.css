@@ -1,24 +1,11 @@
 body {
-    padding-top: 60px;
-}
-
-.navbar-brand {
-    color: black;
-    font-size: 30pt;
-    font-family: 'Slabo 27px', serif;
-}
-
-.navbar {
-    background-color: #EEEEEE;
-    -webkit-box-shadow: 0 1px 10px -3px #111111;
-    -moz-box-shadow: 0 1px 10px -3px #111111;
-    box-shadow: 0 1px 10px -3px #111111;
+    padding-top: 85pt;
 }
 
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 51px;
+    top: 75pt;
     bottom: 0;
     left: 0;
     z-index: 1000;

@@ -1,0 +1,10 @@
+{
+background: "colour",
+foreground: "colour",
+buttons: "colour",
+tile-cat: "colour",
+tile-item: "colour",
+logo: "url",
+offer: [{"url", "description"}],
+reward-img: "url"
+}
