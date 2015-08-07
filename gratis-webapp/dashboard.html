@@ -77,7 +77,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <h3>Product Popularity</h3>
-                                <canvas id="radarChart" class="chart chart-radar" data="point_data" labels="point_ranges"></canvas>
+                                <canvas id="radarChart2" class="chart chart-radar" data="product_data" labels="product_labels"></canvas>
                             </div>
                         </div>
                     </div>
@@ -105,6 +105,14 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div ng-show="sidebar.isSubtabSet(3)">
+                        <br />
+                        <form ng-controller="AddCustomerCtrl">
+                            Name: <input type="text" ng-model="user.name" /><br />
+                            Points: <input type="number" ng-model="user.points" /><br />
+                            <input type="submit" ng-click="addCustomer(user)" value="Add Customer" />
+                        </form>
                     </div>
                 </div>
                 

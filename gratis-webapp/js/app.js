@@ -16,6 +16,9 @@
         $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
         $scope.num_customers = [[50, 100, 200, 400, 450, 600, 700]];
         
+        $scope.product_labels = ['Coffee', 'Eclair', 'Donut', 'Chai Latte', 'Tea'];
+        $scope.product_data = [[100, 50, 69, 200, 30]];
+        
         $http.get('http://scribbler.io:3000/api/customers/').success(function(data) {
             $scope.customers = data;
         });
@@ -53,6 +56,16 @@
     });
     
     app.controller('PointsDistribCtrl', function($scope) {
+    });
+    
+    app.controller('AddCustomerCtrl', function($scope, $http) {
+        $scope.addCustomer = function(user) {
+            user.name = '';
+            user.points = 0;
+            $http.post('http://scribbler.io:3000/api/customers/', user).success(function(data) {
+                
+            });
+        };
     });
     
 })();
