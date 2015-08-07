@@ -74,12 +74,26 @@
     
     app.controller('AddCustomerCtrl', function($scope, $http) {
         $scope.addCustomer = function(user) {
-            user.name = '';
-            user.points = 0;
             $http.post('http://scribbler.io:3000/api/customers/', user).success(function(data) {
-                
+                user.name = '';
+                user.points = 0;
             });
         };
+    });
+    
+    app.controller('AddItemCtrl', function($scope, $http) {
+        $scope.addItem = function(newitem) {
+            //$scope.items.push(newitem);
+            console.log(newitem);
+            $http.defaults.headers.post["Content-Type"] = "application/json";
+            $http.post('http://scribbler.io:3000/api/items/', newitem).success(function(data) {
+                $scope.items.push(newitem);
+                newitem.name = '';
+                newitem.price = 0;
+                newitem.quantity = 0;
+                newitem.image_url = '';
+            });
+        }
     });
     
 })();

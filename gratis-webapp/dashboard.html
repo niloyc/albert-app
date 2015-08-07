@@ -64,7 +64,7 @@
                             <a href class="thumbnail" ng-click="sidebar.setAddItemOn(true)">+</a>
                         </div>
                     </div>
-                    <div id="myModal" ng-show="sidebar.isAddItemOn()">
+                    <div id="myModal" ng-show="sidebar.isAddItemOn()" ng-controller="AddItemCtrl">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -74,16 +74,18 @@
                                 <div class="modal-body">
                                     <form>
                                         <h3>Name:</h3>
-                                        <input type="text" />
+                                        <input type="text" ng-model="newitem.name" />
                                         <h3>Price:</h3>
-                                        <input type="number" />
+                                        <input type="number" ng-model="newitem.price" />
+                                        <h3>Stock quantity:</h3>
+                                        <input type="number" ng-model="newitem.quantity" />
                                         <h3>Image URL:</h3>
-                                        <input type="text" />
+                                        <input type="text" ng-model="newitem.image_url" />
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" ng-click="sidebar.setAddItemOn(false)">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-primary" ng-click="addItem(newitem)">Save changes</button>
                                 </div>
                             </div>
                         </div>
