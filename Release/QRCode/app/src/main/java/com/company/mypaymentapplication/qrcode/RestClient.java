@@ -7,7 +7,7 @@ import retrofit.client.OkClient;
 
 public class RestClient {
 	private static API REST_CLIENT;
-	private static String ROOT = "http://scribbler.io:3000/api";
+	private static String ROOT = "http://getgratis.co:3000/api";
 	
 	static {
 		setupRestClient();

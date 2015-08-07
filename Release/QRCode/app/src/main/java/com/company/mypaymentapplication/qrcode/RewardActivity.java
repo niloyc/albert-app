@@ -2,6 +2,7 @@ package com.company.mypaymentapplication.qrcode;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,19 @@ public class RewardActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward);
+        setResult(RESULT_OK);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showDialog();
+            }
+        }, 2000);
     }
 
     @Override
@@ -42,19 +56,18 @@ public class RewardActivity extends ActionBarActivity {
     }
 
     //Called upon payment button click.
-    public void onButtonClick(View view){
-        Log.d("mytag", "Button clicked.");
+    public void showDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Add the buttons
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
+                finish();
             }
         });
         builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog - do nothing
+                finish();
             }
         });
 
@@ -68,7 +81,5 @@ public class RewardActivity extends ActionBarActivity {
 
         dialog.show();
         dialog.getWindow().setLayout(750, 605);
-
-        Log.d("mytag", "Button click function ended.");
     }
 }
