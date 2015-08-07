@@ -2,6 +2,7 @@
     var app = angular.module('tryAngular', ['chart.js']);
     
     app.controller('AppController', function($scope, $http) {
+        $scope.items = [];
         $scope.customers = '';
         $scope.orders = '';
         $scope.order_item_names = {};
@@ -19,6 +20,10 @@
         $scope.product_labels = ['Coffee', 'Eclair', 'Donut', 'Chai Latte', 'Tea'];
         $scope.product_data = [[100, 50, 69, 200, 30]];
         
+        $http.get('http://scribbler.io:3000/api/items').success(function(data) {
+            $scope.items = data;
+            console.log($scope.items);
+        });
         $http.get('http://scribbler.io:3000/api/customers/').success(function(data) {
             $scope.customers = data;
         });
@@ -32,8 +37,9 @@
     });
     
     app.controller('SidebarController', function() {
-        this.tab = 1;
+        this.tab = 0;
         this.subtab = 1;
+        this.addItemOn = false;
         
         this.setTab = function(newValue) {
             this.tab = newValue;
@@ -49,6 +55,14 @@
         
         this.isSubtabSet = function(tabName) {
             return this.subtab === tabName;
+        }
+        
+        this.setAddItemOn = function(on) {
+            this.addItemOn = on;
+        }
+        
+        this.isAddItemOn = function() {
+            return this.addItemOn;
         }
     });
     

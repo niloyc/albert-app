@@ -42,6 +42,7 @@
                 <div class="col-sm-3 col-md-2 sidebar">
                     <h2>Dashboard</h2>
                     <ul class="nav nav-sidebar">
+                        <li ng-class="{active: sidebar.isSet(0)}"><a href ng-click="sidebar.setTab(0)">Product Catalogue</a></li>
                         <li ng-class="{active: sidebar.isSet(1)}"><a href ng-click="sidebar.setTab(1)">Customer Insights</a></li>
                         <li ng-class="{active: sidebar.isSet(2)}"><a href ng-click="sidebar.setTab(2)">Product Insights</a></li>
                         <li ng-class="{active: sidebar.isSet(3)}"><a href ng-click="sidebar.setTab(3)">Customise Appearance</a></li>
@@ -52,13 +53,48 @@
             </div>
         
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-controller="AppController as app">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
-                    <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
-                    <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
-                </ul>
-                
+                <div class="container-fluid" ng-show="sidebar.isSet(0)">
+                    <div class="row">
+                        <div class="col-lg-2" ng-repeat="item in items">
+                            <a href class="thumbnail"><img src="{{item.image_url}}" class="img-responsive" /></a>
+                            <h3>{{item.name}}</h3>
+                            <p>{{item.price | currency}}</p>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href class="thumbnail" ng-click="sidebar.setAddItemOn(true)">+</a>
+                        </div>
+                    </div>
+                    <div id="myModal" ng-show="sidebar.isAddItemOn()">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" ng-click="sidebar.setAddItemOn(false)" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Add new item...</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <h3>Name:</h3>
+                                        <input type="text" />
+                                        <h3>Price:</h3>
+                                        <input type="number" />
+                                        <h3>Image URL:</h3>
+                                        <input type="text" />
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" ng-click="sidebar.setAddItemOn(false)">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div ng-show="sidebar.isSet(1)">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
+                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
+                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
+                    </ul>
                     <div class="container" ng-show="sidebar.isSubtabSet(1)" ng-controller="PointsDistribCtrl" style="width: 80%; margin-left: 10%;">
                         <div class="row">
                             <div class="col-lg-6">
@@ -117,6 +153,11 @@
                 </div>
                 
                 <div ng-show="sidebar.isSet(2)">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
+                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
+                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
+                    </ul>
                     <div class="container" ng-show="sidebar.isSubtabSet(1)" ng-controller="PointsDistribCtrl" style="width: 80%; margin-left: 10%;">
                         <div class="row">
                             <div class="col-lg-6">
