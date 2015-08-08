@@ -59,6 +59,7 @@
                             <a href class="thumbnail"><img src="{{item.image_url}}" class="img-responsive" /></a>
                             <h3>{{item.name}}</h3>
                             <p>{{item.price | currency}}</p>
+                            <a href ng-click="removeItem(item)">Delete</a>
                         </div>
                         <div class="col-lg-2">
                             <a href class="thumbnail" ng-click="sidebar.setAddItemOn(true)">+</a>

@@ -20,6 +20,14 @@
         $scope.product_labels = ['Coffee', 'Eclair', 'Donut', 'Chai Latte', 'Tea'];
         $scope.product_data = [[100, 50, 69, 200, 30]];
         
+        $scope.removeItem = function(item) {
+            var index = $scope.items.indexOf(item);
+            console.log(item.id);
+            console.log(index);
+            $scope.items.splice(index, 1);
+            $http.delete('http://scribbler.io:3000/api/items/' + item.id);
+        };
+        
         $http.get('http://scribbler.io:3000/api/items').success(function(data) {
             $scope.items = data;
             console.log($scope.items);
@@ -87,11 +95,9 @@
             console.log(newitem);
             $http.defaults.headers.post["Content-Type"] = "application/json";
             $http.post('http://scribbler.io:3000/api/items/', newitem).success(function(data) {
+                // To make deletion work, we need to place the generated id into the local object
+                newitem.id = data.id;
                 $scope.items.push(newitem);
-                newitem.name = '';
-                newitem.price = 0;
-                newitem.quantity = 0;
-                newitem.image_url = '';
             });
         }
     });
