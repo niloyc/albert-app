@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module('tryAngular', ['chart.js']);
+    var app = angular.module('gratisDashboard', ['chart.js']);
     
     app.controller('AppController', function($scope, $http) {
         $scope.items = [];
@@ -90,14 +90,15 @@
     });
     
     app.controller('AddItemCtrl', function($scope, $http) {
-        $scope.addItem = function(newitem) {
-            //$scope.items.push(newitem);
-            console.log(newitem);
+        $scope.newitem = {};
+        $scope.addItem = function() {
+            console.log($scope.newitem);
             $http.defaults.headers.post["Content-Type"] = "application/json";
-            $http.post('http://scribbler.io:3000/api/items/', newitem).success(function(data) {
+            $http.post('http://scribbler.io:3000/api/items/', $scope.newitem).success(function(data) {
                 // To make deletion work, we need to place the generated id into the local object
-                newitem.id = data.id;
-                $scope.items.push(newitem);
+                $scope.newitem.id = data.id;
+                $scope.items.push($scope.newitem);
+                $scope.newitem = {};
             });
         }
     });

@@ -1,74 +1,127 @@
-<html>
+<!DOCTYPE html>
+<html ng-app="gratisUIBuilder">
 <head>
     <title>Gratis UI-builder</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/colorpicker.min.css">
+    <link rel="stylesheet" href="css/home.css">
     <style>
         body {
             margin: 0;
             padding: 0;
             text-align: center;
         }
-        img {
-            margin: 0;
-            padding: 0;
-            z-index: 0;
+        #controls {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding-top: 80pt;
+            text-align: center;
         }
-        #container {
-            position: relative;
-            padding: 0;
-            margin: 0;
+        #controls input {
+            margin-left: 25%;
+            width: 50%;
         }
         #overlay {
+            background-color: rgb(95, 48, 2);
             position: absolute;
             z-index: 1;
-            top: 172px;
-            left: 140px;
-            width: 644px;
-            height: 1027px;
-            background-color: indianred;
+            left: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0;
         }
         #titlebar {
             width: 100%;
             height: 50px;
-            background-color: red;
+            background-color: rgb(253, 234, 155);
+            padding: 0;
+            margin: 0;
+        }
+        #tray {
+            position: absolute;
+            width: 100%;
+            height: 10%;
+            bottom: 0;
+            background-color: rgb(253, 234, 155);
+            text-align: left;
+            font-size: 28pt;
+        }
+        #tray img {
+            height: 100%;
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"> 
     </script>
-    <script src="js/app.js"></script>
+    <script src="js/bootstrap-colorpicker-module.min.js"></script>
+    <script src="js/ui-builder.js"></script>
 </head>
     
-    <body>
-        <div id="container">
-            <div id="overlay">
-                <div id="titlebar">
+    <body ng-controller="AppController">
+        <nav class="navbar navbar-fixed-top">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="caret"></span>
+                </button>
+                <a href="/" class="navbar-brand">gratis</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href>Store</a></li>
+                    <li><a href>Simulator</a></li>
+                    <li><a href>Support</a></li>
+                    <li><a href>About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="dashboard.html"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
+                    <li><a href><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div id="controls">
+            <h1>Settings:</h1>
+            <form>
+                Background colour:<br />
+                <input colorpicker="hex" class="form-control" type="text" ng-model="settings.background" /><br /><br />
+                Foreground colour:<br />
+                <input colorpicker="hex" class="form-control" type="text" ng-model="settings.foreground" /><br /><br />
+                Logo image:<br />
+                <input class="form-control" type="text" ng-model="settings.logo" /><br /><br />
+                <button ng-click="updateSettings()">Submit</button>
+            </form>
+        </div>
+        <div>
+            <div id="overlay" ng-style="{'background-color': settings.background}">
+                <div id="titlebar" ng-style="{'background-color': settings.foreground}">
 
                 </div>
                 <div id="logo">
 
                 </div>
+                <div id="tray" ng-style="{'background-color': settings.foreground}">
+                    <img ng-src="{{settings.logo}}" />
+                    Total: $50.00
+                </div>
             </div>
-            <img src="images/albert.png" id="albert_img" />
+
         </div>
-        
         <script>
-            var albert_img = document.getElementById("albert_img");
-            var container = document.getElementById("container");
+            //var albert_img = document.getElementById("albert_img");
+            var aspect_ratio = 5/8;
             var overlay = document.getElementById("overlay");
+            var controls = document.getElementById("controls");
             
-            var scale = document.body.clientHeight / 1432;
+            var width = window.innerWidth;
+            var height = window.innerHeight - 106;
+            var overlay_width = height * aspect_ratio;
             
-            container.style.left = (document.body.clientWidth / 2) - (920 * scale)/2;
+            overlay.style.height = height + "px";
+            overlay.style.width = overlay_width + "px";
+            controls.style.width = width - overlay_width + "px"
             
-            container.style.height = document.body.clientHeight; 
-            albert_img.style.height = document.body.clientHeight;
-            albert_img.style.width = 920 * scale;
-            container.style.width = 920 * scale;
-            
-            overlay.style.width = 644 * scale;
-            overlay.style.height = 1027 * scale;
-            overlay.style.left = 140 * scale;
-            overlay.style.top = 169 * scale;
-            
+            console.log(height);
+            console.log(height * aspect_ratio);
         </script>
     </body>
 
