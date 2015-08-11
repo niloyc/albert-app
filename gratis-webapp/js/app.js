@@ -2,6 +2,12 @@
     var app = angular.module('gratisDashboard', ['chart.js']);
     
     app.controller('AppController', function($scope, $http) {
+        $scope.addItemOn = false;
+        
+        $scope.edit = false;
+        $scope.edit_item = {};
+        $scope.edit_item_copy = {};
+        
         $scope.items = [];
         $scope.customers = '';
         $scope.orders = '';
@@ -20,6 +26,13 @@
         $scope.product_labels = ['Coffee', 'Eclair', 'Donut', 'Chai Latte', 'Tea'];
         $scope.product_data = [[100, 50, 69, 200, 30]];
         
+        $scope.editItem = function(item) {
+            $scope.edit = true;
+            $scope.edit_item = item;
+            $scope.edit_item_copy = JSON.parse(JSON.stringify(item));
+            $scope.addItemOn = true;
+        }
+        
         $scope.removeItem = function(item) {
             var index = $scope.items.indexOf(item);
             console.log(item.id);
@@ -27,6 +40,18 @@
             $scope.items.splice(index, 1);
             $http.delete('http://scribbler.io:3000/api/items/' + item.id);
         };
+        
+        $scope.setAddItemOn = function(on) {
+            if (!on) {
+                $scope.edit_item = {};
+                $scope.edit = false;
+            }
+            $scope.addItemOn = on;
+        }
+        
+        $scope.isAddItemOn = function() {
+            return $scope.addItemOn;
+        }
         
         $http.get('http://scribbler.io:3000/api/items').success(function(data) {
             $scope.items = data;
@@ -47,7 +72,6 @@
     app.controller('SidebarController', function() {
         this.tab = 0;
         this.subtab = 1;
-        this.addItemOn = false;
         
         this.setTab = function(newValue) {
             this.tab = newValue;
@@ -63,14 +87,6 @@
         
         this.isSubtabSet = function(tabName) {
             return this.subtab === tabName;
-        }
-        
-        this.setAddItemOn = function(on) {
-            this.addItemOn = on;
-        }
-        
-        this.isAddItemOn = function() {
-            return this.addItemOn;
         }
     });
     
@@ -90,16 +106,20 @@
     });
     
     app.controller('AddItemCtrl', function($scope, $http) {
-        $scope.newitem = {};
         $scope.addItem = function() {
-            console.log($scope.newitem);
+            console.log($scope.edit_item);
             $http.defaults.headers.post["Content-Type"] = "application/json";
-            $http.post('http://scribbler.io:3000/api/items/', $scope.newitem).success(function(data) {
-                // To make deletion work, we need to place the generated id into the local object
-                $scope.newitem.id = data.id;
-                $scope.items.push($scope.newitem);
-                $scope.newitem = {};
-            });
+            if ($scope.edit) {
+                $http.put('http://scribbler.io:3000/api/items/' + $scope.edit_item.id, $scope.edit_item);
+            }
+            else {
+                $http.post('http://scribbler.io:3000/api/items/', $scope.edit_item).success(function(data) {
+                    // To make deletion work, we need to place the generated id into the local object
+                    $scope.edit_item.id = data.id;
+                    $scope.items.push($scope.edit_item);
+                    $scope.edit_item = {};
+                });
+            }
         }
     });
     
