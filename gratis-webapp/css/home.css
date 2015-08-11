@@ -45,32 +45,15 @@ footer {
     background-clip: text;
 }
 
-.jumbotron:nth-child(even) {
-    padding-left: 40%;
-}
-
-.jumbotron:nth-child(odd) {
-    padding-right: 40%;
-}
-
 .jumbotron {
     margin-bottom: 0;
     width: 100%;
     height: 50%;
     position: relative;
     min-height: 500px;
-    padding-top: 150px;
     background-image: url(https://c2.staticflickr.com/4/3807/10388498913_51fd66243e_b.jpg);
     background-blend-mode: lighten;
     background-size: 100%;
-}
-
-#albert-div {
-    background-image: url(../images/albert2.png);
-    background-position: right;
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-blend-mode: normal;
 }
 
 #analytics-div {
@@ -88,10 +71,7 @@ footer {
 }
 
 #analytics-example {
-    position: absolute;
-    left: 5%;
-    top: 10%;
-    height: 80%;
+    width: 100%;
     background-color: rgba(255,255,255,0.3);
 }
 
@@ -100,7 +80,7 @@ footer {
     top: 0;
     left: 0;
     height: 50pt;
-    width: 100%;
+    width: 80%;
     background-color: rgb(100, 200, 200);
     transition: background-color 1000ms linear;
 }
@@ -108,4 +88,15 @@ footer {
 .custom-header-trans {
     background-color: rgb(200, 100, 100);
     transition: background-color 1000ms linear;
+}
+
+.v-center {
+    display: table !important;
+    height: 400px;
+}
+
+.content {
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
 }
