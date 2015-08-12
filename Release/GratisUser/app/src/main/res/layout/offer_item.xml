@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#f2743c"
@@ -10,29 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f2743c"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/text_item_icon"
             android:layout_width="50dp"
             android:layout_height="50dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="10"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="4dp">
 
             <TextView
                 android:id="@+id/text_item_name"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_weight="2"
-                android:gravity="bottom"
-                android:singleLine="true"
+                android:gravity="center_vertical"
+                android:singleLine="false"
                 android:text="test"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
@@ -46,18 +50,19 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginTop="6dp"
                     android:src="@drawable/map_icon" />
 
                 <TextView
                     android:id="@+id/text_item_location"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="3"
-                    android:gravity="bottom"
                     android:text="test"
-                    android:textColor="#ff646464"
+                    android:textColor="#ffffff"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
@@ -68,7 +73,9 @@
     </LinearLayout>
     
     <TextView
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFFFFF"/>

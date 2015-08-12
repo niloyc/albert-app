@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 	private TextView title;
 
 	private ListView itemList, orderItemList;
-	private ArrayList<OrderItem> orderItems;
+	private ArrayList<Item> items;
 	
 	private final Handler mHandler = new Handler(){
 		@Override
@@ -43,13 +43,14 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 		}
 	};
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sliding_up_panel);
 		Log.d(tag, "Started KFCAlbert");
 
-		orderItems = new ArrayList<>();
+		items = new ArrayList<>();
 	}
 
 	@Override
@@ -65,14 +66,14 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 		itemList = (ListView) findViewById(R.id.itemList);
 		orderItemList = (ListView) findViewById(R.id.orderItemList);
 
-		orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, orderItems));
+		orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, items));
 
-		RestClient.get().getOrders(new Callback<List<Order>>() {
+		RestClient.get().getOrders(new Callback<List<Item>>() {
 			@Override
-			public void success(List<Order> orders, Response response) {
+			public void success(List<Item> items, Response response) {
 				itemList.setAdapter(new OrderListAdapter(getApplicationContext(),
 						R.layout.menu_item,
-						orders.get(0).getItems()));
+						items));
 			}
 
 			@Override
@@ -87,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 		title = (TextView) findViewById(R.id.text_order_title);
 		confirmButton = (Button) findViewById(R.id.btn_confirm_order);
 		confirmButton.setOnClickListener(this);
+		confirmButton.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -117,13 +119,13 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 	}
 
 	private void resetOrder(){
-		RestClient.get().getOrders(new Callback<List<Order>>() {
+		RestClient.get().getOrders(new Callback<List<Item>>() {
 			@Override
-			public void success(List<Order> orders, Response response) {
+			public void success(List<Item> items, Response response) {
 				itemList.setAdapter(new OrderListAdapter(getApplicationContext(),
 						R.layout.menu_item,
-						orders.get(0).getItems()));
-				((TextView)findViewById(R.id.text_total)).setText("0.0");
+						items));
+				((TextView)findViewById(R.id.text_total)).setText("0.00");
 
 				((OrderListAdapter)orderItemList.getAdapter()).clear();
 				((OrderListAdapter) orderItemList.getAdapter()).notifyDataSetChanged();
@@ -135,12 +137,13 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 			}
 		});
 
-		orderItems.clear();
-		orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, orderItems));
+		confirmButton.setVisibility(View.GONE);
+		items.clear();
+		orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, items));
 
 		title.setText("Order");
 		confirmButton.setText("Confirm Order");
-		confirmButton.setBackgroundColor(Color.parseColor("#f5846c"));
+		confirmButton.setBackgroundColor(Color.parseColor("#4CAF50"));
 		title.setBackgroundColor(Color.parseColor("#f5846c"));
 		confirmButton.setEnabled(true);
 	}
@@ -183,14 +186,23 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
 		OrderListAdapter adapter = (OrderListAdapter) adapterView.getAdapter();
-		OrderItem item = adapter.getItem(index);
-		item.setQuantity(1);
-		((OrderListAdapter) orderItemList.getAdapter()).add(item);
-		orderItems.add(item);
+		Item item = adapter.getItem(index);
+
+		if(items.contains(item)){
+			int qty = items.get(items.indexOf(item)).getQuantity();
+			items.get(items.indexOf(item)).setQuantity(qty+1);
+		}else{
+			item.setQuantity(1);
+			items.add(item);
+		}
+
+		((OrderListAdapter)orderItemList.getAdapter()).notifyDataSetChanged();
 
 		double totalPrice = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
 		totalPrice+=item.getPrice();
-		DecimalFormat df = new DecimalFormat("#.##");
+		DecimalFormat df = new DecimalFormat("#.00");
 		((TextView)findViewById(R.id.text_total)).setText(df.format(totalPrice));
+
+		confirmButton.setVisibility(View.VISIBLE);
 	}
 }

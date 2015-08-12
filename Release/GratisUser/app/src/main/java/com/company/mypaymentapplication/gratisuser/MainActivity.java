@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -16,11 +17,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.company.mypaymentapplication.gratisuser.util.Utilities;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -29,6 +32,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.company.mypaymentapplication.gratisuser.util.Utilities.setFont;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     public static String tag = "NICK";
@@ -39,36 +44,56 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private NfcAdapter mAdapter;
     private NdefMessage mMessage;
 
+    private ViewGroup layoutNoQR;
+    private ImageView qrImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(tag, "Started GratisUser");
-        // Set Listeners.
-        Button btn_disp_qr = (Button) findViewById(R.id.btn_disp_qr);
-        btn_disp_qr.setOnClickListener(this);
+        // Set Listeners
         Button btn_link_qr = (Button) findViewById(R.id.btn_link_qr);
         btn_link_qr.setOnClickListener(this);
+
+        layoutNoQR = (ViewGroup) findViewById(R.id.layout_no_qr);
+        qrImage = (ImageView) findViewById(R.id.img_qr);
         // Load preferences and ID.
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         user_id = settings.getString("user_id", "default");
+
+
+        if(user_id.equals("default")){
+            layoutNoQR.setVisibility(View.VISIBLE);
+            qrImage.setVisibility(View.GONE);
+        }else{
+            qrImage.setVisibility(View.VISIBLE);
+            qrImage.setImageBitmap(createQRImage(user_id));
+            layoutNoQR.setVisibility(View.GONE);
+        }
+
         Log.d(MainActivity.tag, "ma i think user_id is " + user_id);
         // Set the offer list.
         ListView offerList = (ListView) findViewById(R.id.list_offers);
             // this should be from a REST call:
         List<OfferItem> offers = new LinkedList<OfferItem>();
-        offers.add(new OfferItem("Free coffee @random coffee place", "0.5km away", getResources().getDrawable(R.drawable.coffee_icon)));
-        offers.add(new OfferItem("Free upgrade when you buy random stuff", "1.2km away", getResources().getDrawable(R.drawable.drink_icon)));
-        offers.add(new OfferItem("Random offer of random nearby place", "3.3km away", getResources().getDrawable(R.drawable.random_icon)));
+        offers.add(new OfferItem("Free coffee Bevi espresso", "0.5km away", getResources().getDrawable(R.drawable.coffee_icon)));
+        offers.add(new OfferItem("Free upgrade when you buy a salmon bagel", "1.2km away", getResources().getDrawable(R.drawable.drink_icon)));
+        offers.add(new OfferItem("2 for 1 Cappuccinos, Bring a friend", "2.3km away", getResources().getDrawable(R.drawable.coffee_icon)));
             // end
         offerList.setAdapter(new OfferListAdapter(getApplicationContext(),
                 R.layout.offer_item,
                 offers));
 
-
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         mMessage = new NdefMessage(NdefRecord.createMime("text/plain", user_id.getBytes()));
         mAdapter.setNdefPushMessage(mMessage, this);
+
+        Utilities.loadFonts(getApplicationContext());
+
+        ViewGroup root = (ViewGroup)findViewById(R.id.layout_root_main);
+        setFont(root);
+
     }
 
     @Override
@@ -98,29 +123,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         switch(id){
-            case R.id.btn_disp_qr:
-                Log.d(tag, "Displaying QR");
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                // Add the buttons
-                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog - do nothing
-                    }
-                });
-                // Create the AlertDialog
-                AlertDialog dialog = builder.create();
-                ImageView image = new ImageView(this);
-                image.setImageBitmap(MainActivity.createQRImage(user_id));
-                dialog.setView(image);
-                dialog.show();
-                //dialog.getWindow().setLayout(750, 605);
-
-                break;
             case R.id.btn_link_qr:
                 Log.d(tag, "Linking QR");
                 IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                 integrator.initiateScan();
-
                 break;
         }
     }
@@ -141,6 +147,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             editor.commit();
             //user_id = "A12345";
             Log.d(tag, "user_id is now "+result);
+
+            qrImage.setVisibility(View.VISIBLE);
+            qrImage.setImageBitmap(createQRImage(user_id));
+            layoutNoQR.setVisibility(View.GONE);
         }
     }
 

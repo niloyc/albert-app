@@ -29,18 +29,18 @@ public interface API {
 	
 	//// ORDERS ////
 	
-	@GET("/orders")
-	void getOrders(Callback<List<Order>> callback);
+	@GET("/items")
+	void getOrders(Callback<List<Item>> callback);
 	
-	@GET("/orders/{id}")
-	void getOrder(@Path("id") String id, Callback<Order> callback);
+	@GET("/items/{id}")
+	void getOrder(@Path("id") String id, Callback<Item> callback);
 	
-	@POST("/orders")
-	void addOrder(@Body Order order, Callback<List<Order>> callback);
+	@POST("/items")
+	void addOrder(@Body Item item, Callback<List<Item>> callback);
 	
-	@PUT("/orders/{id}")
-	void updateOrder(@Path("id") String id, @Body Order order, Callback<Order> callback);
+	@PUT("/items/{id}")
+	void updateOrder(@Path("id") String id, @Body Item item, Callback<Item> callback);
 	
-	@DELETE("/orders/{id}")
-	void deleteOrder(@Path("id") String id, Callback<Order> callback);
+	@DELETE("/items/{id}")
+	void deleteOrder(@Path("id") String id, Callback<Item> callback);
 }
