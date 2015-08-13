@@ -10,7 +10,7 @@
         
         $scope.items = [];
         $scope.current_items = [];
-        $scope.root_item = {name:'Root', id:'root', is_cat:true};
+        $scope.root_item = {name:'Home', id:'root', is_cat:true};
         $scope.breadcrumbs = [$scope.root_item];
         $scope.curr_parent = $scope.root_item;
         

@@ -58,7 +58,7 @@ body {
 
 .edit-item {
     font-size: 18pt;
-    bottom: 4pt;
+    bottom: 5pt;
     left: 12pt;
 }
 
@@ -99,5 +99,6 @@ body {
 }
 
 .catBg {
-    background-color: rgb(200, 230, 255);
+    background-color: rgb(245, 245, 245);
+    border: 1px solid lightgrey;
 }
