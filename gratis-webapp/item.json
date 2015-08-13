@@ -1,0 +1,10 @@
+{
+    id: "string",
+    name: "string",
+    quantity: 0,
+    price: 0.00,
+    image_url: "string",
+    is_cat: true,
+    parent: "id",
+    children: ["id1", "id2", "id3"]
+}

@@ -108,6 +108,8 @@
     app.controller('AddItemCtrl', function($scope, $http) {
         $scope.addItem = function() {
             console.log($scope.edit_item);
+            $scope.edit_item.parent = "a";
+            $scope.edit_item.is_cat = false;
             $http.defaults.headers.post["Content-Type"] = "application/json";
             if ($scope.edit) {
                 $http.put('http://scribbler.io:3000/api/items/' + $scope.edit_item.id, $scope.edit_item);
