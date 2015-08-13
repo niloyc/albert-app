@@ -14,6 +14,10 @@
             "type": "string",
             "required": true
           },
+	  "image_url": {
+	    "type": "string",
+	    "required": true
+	  },
           "quantity": {
             "type": "number",
             "required": true

@@ -19,11 +19,11 @@
       "type": "string",
       "required": true
     },
-    "tile-cat": {
+    "tile_cat": {
       "type": "string",
       "required": true
     },
-    "tile-item": {
+    "tile_item": {
       "type": "string",
       "required": true
     },
@@ -46,7 +46,7 @@
       ],
       "required": true
     },
-    "reward-img": {
+    "reward_img": {
       "type": "string",
       "required": true
     }

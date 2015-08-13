@@ -19,9 +19,28 @@
       "type": "number",
       "required": true
     },
-    "image-url": {
+    "image_url": {
       "type": "string",
       "required": true
+    },
+    "is_cat": {
+      "type": "boolean",
+      "required": true
+    },
+    "parent": {
+      "type": "string",
+      "required": true
+    },
+    "children": {
+      "type": [
+      {
+        "id": {
+        	"type": "string",
+        	"required": true
+        }
+      }
+      ],
+      "required": false
     }
   },
   "validations": [],
