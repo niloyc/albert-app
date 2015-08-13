@@ -1,6 +1,7 @@
 package com.company.mypaymentapplication.gratisuser;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.company.mypaymentapplication.gratisuser.util.Utilities;
+
 import java.util.List;
 
 public class OfferListAdapter extends ArrayAdapter<OfferItem> {
@@ -16,13 +19,14 @@ public class OfferListAdapter extends ArrayAdapter<OfferItem> {
     private Context c;
     private int resId;
     private List<OfferItem> items;
-
+    Typeface mFont;
     public OfferListAdapter(Context context, int resource, List<OfferItem> objects) {
         super(context, resource, objects);
 
         c = context;
         resId = resource;
         items = objects;
+
     }
 
     @Override
@@ -33,6 +37,7 @@ public class OfferListAdapter extends ArrayAdapter<OfferItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Return the custom view used in the file array
+
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,6 +62,8 @@ public class OfferListAdapter extends ArrayAdapter<OfferItem> {
             }
 
         }
+
+        Utilities.setFont((ViewGroup)v.findViewById(R.id.layout_root_item));
 
         return v;
     }

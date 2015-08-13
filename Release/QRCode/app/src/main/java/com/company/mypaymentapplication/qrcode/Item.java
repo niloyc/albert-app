@@ -1,12 +1,12 @@
 package com.company.mypaymentapplication.qrcode;
 
-public class OrderItem {
+public class Item {
 	private String name;
 	private String image_url;
 	private int quantity;
 	private double price;
 
-	public OrderItem(String name, String image_url, int quantity, double price) {
+	public Item(String name, String image_url, int quantity, double price) {
 		this.name = name;
 		this.quantity = quantity;
 		this.price = price;

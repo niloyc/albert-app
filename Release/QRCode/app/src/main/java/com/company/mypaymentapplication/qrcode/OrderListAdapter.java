@@ -13,13 +13,13 @@ import com.koushikdutta.ion.Ion;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class OrderListAdapter extends ArrayAdapter<OrderItem> {
+public class OrderListAdapter extends ArrayAdapter<Item> {
 
     private Context c;
     private int resId;
-    private List<OrderItem> items;
+    private List<Item> items;
 
-    public OrderListAdapter(Context context, int resource, List<OrderItem> objects) {
+    public OrderListAdapter(Context context, int resource, List<Item> objects) {
         super(context, resource, objects);
 
         c = context;
@@ -28,7 +28,7 @@ public class OrderListAdapter extends ArrayAdapter<OrderItem> {
     }
 
     @Override
-    public OrderItem getItem(int position) {
+    public Item getItem(int position) {
         return items.get(position);
     }
 
@@ -41,7 +41,7 @@ public class OrderListAdapter extends ArrayAdapter<OrderItem> {
             v = inflater.inflate(resId, null);
         }
 
-        final OrderItem item = items.get(position);
+        final Item item = items.get(position);
         if (item != null) {   //Put the name/data and icon according to the file data
             TextView name = (TextView) v.findViewById(R.id.text_item_name);
             TextView data = (TextView) v.findViewById(R.id.text_item_data);
@@ -52,8 +52,8 @@ public class OrderListAdapter extends ArrayAdapter<OrderItem> {
                 name.setText(item.getName());
 
             if (price != null){
-                DecimalFormat df = new DecimalFormat("#.##");
-                price.setText("$" + item.getPrice());
+                DecimalFormat df = new DecimalFormat("#.00");
+                price.setText("$" + df.format(item.getPrice()));
             }
 
             if(item.getName().equals("Total")){
@@ -72,7 +72,6 @@ public class OrderListAdapter extends ArrayAdapter<OrderItem> {
                     .animateLoad(R.anim.abc_fade_out)
                     .animateIn(R.anim.abc_fade_in)
                     .load(item.getImage_url());
-
             
         }
 

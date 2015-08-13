@@ -13,7 +13,7 @@
         android:gravity="bottom"
         sothree:panelHeight="100dp"
         sothree:shadowHeight="4dp"
-        sothree:overlay="true"
+        sothree:overlay="false"
         sothree:dragView="@+id/dragView">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
