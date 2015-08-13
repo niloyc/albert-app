@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryForegroundColor">#5a534b</color>
+    <color name="secondaryForegroundColor">#2d292a</color>
+    <color name="tertiaryForegroundColor">#e3ded6</color>
+    <color name="primaryTextColor">#efeac6</color>
+    <color name="secondaryTextColor">#6a4544</color>
+</resources>
