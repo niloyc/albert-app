@@ -76,24 +76,33 @@
                                     <button type="button" class="close" ng-click="setAddItemOn(false)" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">{{edit ? ("Edit " + edit_item.name + "...") : "Add new item..."}}</h4>
                                 </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <h3>Name:</h3>
-                                        <input type="text" ng-model="edit_item.name" />
-                                        <h3>Price:</h3>
-                                        <input type="number" ng-model="edit_item.price" />
-                                        <h3>Stock quantity:</h3>
-                                        <input type="number" ng-model="edit_item.quantity" />
-                                        <h3>Image URL:</h3>
-                                        <input type="text" ng-model="edit_item.image_url" />
-                                        <h3>Category?</h3>
-                                        <input type="checkbox" name="is_cat" ng-model="edit_item.is_cat" />
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" ng-click="setAddItemOn(false)">Close</button>
-                                    <button type="button" class="btn btn-primary" ng-click="addItem()">Save changes</button>
-                                </div>
+                                <form class="form-horizontal">
+                                    <div class="modal-body">
+                                        <button type="button" class="btn btn-default btn-lg" ng-class="{active: isCategory(), 'btn-primary': isCategory()}" ng-click="setCategory(true)">Category</button>
+                                        <button type="button" class="btn btn-default btn-lg" ng-class="{active: !isCategory(), 'btn-primary': !isCategory()}" ng-click="setCategory(false)">Item</button>
+                                        <div class="form-group">
+                                            <label for="item_name" class="control-label">Name</label>
+                                            <input type="text" id="item_name" class="form-control" ng-model="edit_item.name" />
+                                        </div>
+                                        <div class="form-group" ng-if="!isCategory()">
+                                            <label for="item_price" class="control-label">Price</label>
+                                            <input type="number" id="item_price" class="form-control" ng-model="edit_item.price" />
+                                        </div>
+                                        <div class="form-group" ng-if="!isCategory()">
+                                            <label for="item_quantity" class="control-label">Stock quantity</label>
+                                            <input type="number" id="item_quantity" class="form-control" ng-model="edit_item.quantity" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="item_image_url" class="control-label">Image URL</label>
+                                            <input type="text" id="item_image_url" class="form-control" ng-model="edit_item.image_url" />
+                                        </div>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" ng-click="setAddItemOn(false)">Close</button>
+                                        <button type="submit" class="btn btn-primary" ng-click="addItem()">Save changes</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

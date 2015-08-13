@@ -141,6 +141,14 @@
     });
     
     app.controller('AddItemCtrl', function($scope, $http) {
+        $scope.isCategory = function() {
+            return $scope.edit_item.is_cat;
+        }
+        
+        $scope.setCategory = function(cat) {
+            $scope.edit_item.is_cat = cat;
+        }
+        
         $scope.addItem = function() {
             console.log($scope.edit_item);
             $scope.edit_item.is_cat = $scope.edit_item.is_cat || false;
