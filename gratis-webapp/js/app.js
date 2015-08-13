@@ -152,6 +152,10 @@
         $scope.addItem = function() {
             console.log($scope.edit_item);
             $scope.edit_item.is_cat = $scope.edit_item.is_cat || false;
+            if ($scope.edit_item.is_cat) {
+                $scope.edit_item.price = 0;
+                $scope.edit_item.quantity = 0;
+            }
             $scope.edit_item.parent = $scope.breadcrumbs[0].id;
             if ($scope.edit) {
                 $http.put('http://scribbler.io:3000/api/items/' + $scope.edit_item.id, $scope.edit_item);
