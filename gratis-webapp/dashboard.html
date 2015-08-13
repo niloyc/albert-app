@@ -55,13 +55,17 @@
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-controller="AppController as app">
                 <div class="container-fluid" ng-show="sidebar.isSet(0)">
                     <div class="row">
-                        <div class="col-lg-2" ng-repeat="item in items">
-                            <a href ng-click="editItem(item)" class="thumbnail"><img ng-src="{{item.image_url}}" class="img-responsive" /></a>
+                        <ol class="breadcrumb">
+                            <li ng-repeat="b in breadcrumbs | orderBy:'-'"><a href ng-click="moveTreeTo(b)">{{b.name}}</a></li>
+                        </ol>
+                        <div class="col-lg-2 item" ng-repeat="item in current_items" ng-class="{catBg: item.is_cat}">
+                            <a href ng-click="moveTreeTo(item)" class="thumbnail"><img ng-src="{{item.image_url}}" class="img-responsive" /></a>
                             <h3>{{item.name}}</h3>
-                            {{item.price | currency}}
+                            <span ng-if="!item.is_cat">{{item.price | currency}}</span>
+                            <a href ng-click="editItem(item)">Edit</a>
                             <a href class="delete-item" ng-click="removeItem(item)" title="Delete"><span class="glyphicon glyphicon-remove-circle"></span></a>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 item">
                             <a href class="thumbnail" ng-click="setAddItemOn(true)">+</a>
                         </div>
                     </div>
@@ -82,6 +86,8 @@
                                         <input type="number" ng-model="edit_item.quantity" />
                                         <h3>Image URL:</h3>
                                         <input type="text" ng-model="edit_item.image_url" />
+                                        <h3>Category?</h3>
+                                        <input type="checkbox" name="is_cat" ng-model="edit_item.is_cat" />
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -92,121 +98,123 @@
                         </div>
                     </div>
                 </div>
-                <div ng-show="sidebar.isSet(1)">
-                    <ul class="nav nav-tabs">
-                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
-                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
-                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
-                    </ul>
-                    <div class="container" ng-show="sidebar.isSubtabSet(1)" ng-controller="PointsDistribCtrl" style="width: 80%; margin-left: 10%;">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h3>Points Distribution:</h3>
-                                <canvas id="barChart" class="chart chart-bar" data="point_data" series="series" labels="point_ranges"></canvas>
+                <div ng-controller="InsightsCtrl">
+                    <div ng-show="sidebar.isSet(1)">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
+                            <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
+                            <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
+                        </ul>
+                        <div class="container" ng-show="sidebar.isSubtabSet(1)" style="width: 80%; margin-left: 10%;">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3>Points Distribution:</h3>
+                                    <canvas id="barChart" class="chart chart-bar" data="point_data" series="series" labels="point_ranges"></canvas>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h3># Registered Customers</h3>
+                                    <canvas id="lineChart" class="chart chart-line" data="num_customers" labels="months"></canvas>
+                                </div>
                             </div>
-                            <div class="col-lg-6">
-                                <h3># Registered Customers</h3>
-                                <canvas id="lineChart" class="chart chart-line" data="num_customers" labels="months"></canvas>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3>Customer Ages</h3>
+                                    <canvas id="pieChart2" class="chart chart-pie" data="age_data" labels="age_labels" legend="true"></canvas>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h3>Product Popularity</h3>
+                                    <canvas id="radarChart2" class="chart chart-radar" data="product_data" labels="product_labels"></canvas>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h3>Customer Ages</h3>
-                                <canvas id="pieChart2" class="chart chart-pie" data="age_data" labels="age_labels" legend="true"></canvas>
-                            </div>
-                            <div class="col-lg-6">
-                                <h3>Product Popularity</h3>
-                                <canvas id="radarChart2" class="chart chart-radar" data="product_data" labels="product_labels"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-show="sidebar.isSubtabSet(2)">
-                        <h3>Customer list:</h3>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>
-                                    Customer ID
-                                </th>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Points
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="cust in customers">
-                                    <td>{{cust.id}}</td>
-                                    <td>{{cust.name}}</td>
-                                    <td>{{cust.points}}</td>
+                        <div ng-show="sidebar.isSubtabSet(2)">
+                            <h3>Customer list:</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Customer ID
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Points
+                                    </th>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div ng-show="sidebar.isSubtabSet(3)">
-                        <br />
-                        <form ng-controller="AddCustomerCtrl">
-                            Name: <input type="text" ng-model="user.name" /><br />
-                            Points: <input type="number" ng-model="user.points" /><br />
-                            <input type="submit" ng-click="addCustomer(user)" value="Add Customer" />
-                        </form>
-                    </div>
-                </div>
-                
-                <div ng-show="sidebar.isSet(2)">
-                    <ul class="nav nav-tabs">
-                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
-                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
-                        <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
-                    </ul>
-                    <div class="container" ng-show="sidebar.isSubtabSet(1)" ng-controller="PointsDistribCtrl" style="width: 80%; margin-left: 10%;">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h3>Points Distribution:</h3>
-                                <canvas id="barChart" class="chart chart-bar" data="point_data" series="series" labels="point_ranges"></canvas>
-                            </div>
-                            <div class="col-lg-6">
-                                <h3>Product Popularity</h3>
-                                <canvas id="radarChart" class="chart chart-radar" data="point_data" labels="point_ranges"></canvas>
-                            </div>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cust in customers">
+                                        <td>{{cust.id}}</td>
+                                        <td>{{cust.name}}</td>
+                                        <td>{{cust.points}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h3>Customer Ages</h3>
-                                <canvas id="pieChart2" class="chart chart-pie" data="age_data" labels="age_labels" legend="true"></canvas>
-                            </div>
-                            <div class="col-lg-6">
-                                <h3>Product Popularity</h3>
-                                <canvas id="radarChart" class="chart chart-radar" data="point_data" labels="point_ranges"></canvas>
-                            </div>
+                        <div ng-show="sidebar.isSubtabSet(3)">
+                            <br />
+                            <form ng-controller="AddCustomerCtrl">
+                                Name: <input type="text" ng-model="user.name" /><br />
+                                Points: <input type="number" ng-model="user.points" /><br />
+                                <input type="submit" ng-click="addCustomer(user)" value="Add Customer" />
+                            </form>
                         </div>
                     </div>
-                    <div ng-show="sidebar.isSubtabSet(2)">
-                        <h2>Order list:</h2>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>
-                                    Customer ID
-                                </th>
-                                <th>
-                                    Paid
-                                </th>
-                                <th>
-                                    Contents
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="order in orders">
-                                    <td>{{order.customer_id}}</td>
-                                    <td>{{order.paid}}</td>
-                                    <td><ul><li ng-repeat="item in order.items">{{item.quantity}} &times; {{item.name}}</li></ul></td>
+
+                    <div ng-show="sidebar.isSet(2)">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" ng-class="{active: sidebar.isSubtabSet(1)}"><a href ng-click="sidebar.setSubtab(1)">Overview</a></li>
+                            <li role="presentation" ng-class="{active: sidebar.isSubtabSet(2)}"><a href ng-click="sidebar.setSubtab(2)">Raw data</a></li>
+                            <li role="presentation" ng-class="{active: sidebar.isSubtabSet(3)}"><a href ng-click="sidebar.setSubtab(3)">Add customers</a></li>
+                        </ul>
+                        <div class="container" ng-show="sidebar.isSubtabSet(1)" style="width: 80%; margin-left: 10%;">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3>Points Distribution:</h3>
+                                    <canvas id="barChart" class="chart chart-bar" data="point_data" series="series" labels="point_ranges"></canvas>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h3>Product Popularity</h3>
+                                    <canvas id="radarChart" class="chart chart-radar" data="point_data" labels="point_ranges"></canvas>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3>Customer Ages</h3>
+                                    <canvas id="pieChart2" class="chart chart-pie" data="age_data" labels="age_labels" legend="true"></canvas>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h3>Product Popularity</h3>
+                                    <canvas id="radarChart" class="chart chart-radar" data="point_data" labels="point_ranges"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="sidebar.isSubtabSet(2)">
+                            <h2>Order list:</h2>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Customer ID
+                                    </th>
+                                    <th>
+                                        Paid
+                                    </th>
+                                    <th>
+                                        Contents
+                                    </th>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="order in orders">
+                                        <td>{{order.customer_id}}</td>
+                                        <td>{{order.paid}}</td>
+                                        <td><ul><li ng-repeat="item in order.items">{{item.quantity}} &times; {{item.name}}</li></ul></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
