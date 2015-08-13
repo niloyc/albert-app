@@ -50,12 +50,21 @@ body {
     text-decoration: none;
 }
 
-.delete-item {
-    font-size: 22pt;
+.item-button {
     position: absolute;
-    bottom: 2pt;
-    right: 14pt;
     color: lightgray;
+    font-size: 22pt;
+}
+
+.edit-item {
+    font-size: 18pt;
+    bottom: 4pt;
+    left: 12pt;
+}
+
+.delete-item {
+    bottom: 2pt;
+    right: 10pt;
 }
 
 .delete-item:hover {

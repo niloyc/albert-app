@@ -62,8 +62,8 @@
                             <a href ng-click="moveTreeTo(item)" class="thumbnail"><img ng-src="{{item.image_url}}" class="img-responsive" /></a>
                             <h3>{{item.name}}</h3>
                             <span ng-if="!item.is_cat">{{item.price | currency}}</span>
-                            <a href ng-click="editItem(item)">Edit</a>
-                            <a href class="delete-item" ng-click="removeItem(item)" title="Delete"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                            <a href class="item-button edit-item" ng-click="editItem(item)"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href class="item-button delete-item" ng-click="removeItem(item)" title="Delete"><span class="glyphicon glyphicon-remove-circle"></span></a>
                         </div>
                         <div class="col-lg-2 item">
                             <a href class="thumbnail" ng-click="setAddItemOn(true)">+</a>
