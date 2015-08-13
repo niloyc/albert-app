@@ -1,4 +1,4 @@
-package com.argonauts.gratis;
+package com.argonauts.gratisuser.util;
 
 import java.util.List;
 
@@ -26,21 +26,5 @@ public interface API {
 	
 	@DELETE("/customers/{id}")
 	void deleteCustomer(@Path("id") String id, Callback<Customer> callback);
-	
-	//// ORDERS ////
-	
-	@GET("/items")
-	void getItems(Callback<List<Item>> callback);
-	
-	@GET("/items/{id}")
-	void getItem(@Path("id") String id, Callback<Item> callback);
-	
-	@POST("/items")
-	void addItem(@Body Item item, Callback<List<Item>> callback);
-	
-	@PUT("/items/{id}")
-	void updateItem(@Path("id") String id, @Body Item item, Callback<Item> callback);
-	
-	@DELETE("/items/{id}")
-	void deleteItems(@Path("id") String id, Callback<Item> callback);
+
 }

@@ -52,25 +52,26 @@ public class OrderListAdapter extends ArrayAdapter<Item> {
                 name.setText(item.getName());
 
             if (price != null){
-                DecimalFormat df = new DecimalFormat("#.00");
+                DecimalFormat df = new DecimalFormat("0.00");
                 price.setText("$" + df.format(item.getPrice()));
             }
 
             if(item.getName().equals("Total")){
                 data.setText("Tips not included");
-                icon.setImageResource(R.drawable.kfc_logo);
+                icon.setImageResource(R.drawable.store_logo);
                 return v;
             }
 
             if (data != null) {
                 data.setText("Quantity: " + item.getQuantity());
+                DecimalFormat df = new DecimalFormat("0.00");
+                price.setText("$" + df.format(item.getPrice()*item.getQuantity()));
             }
 
             Ion.with(icon)
-                    .placeholder(R.drawable.kfc_logo)
-                    .error(R.drawable.kfc_logo)
-                    .animateLoad(R.anim.abc_fade_out)
-                    .animateIn(R.anim.abc_fade_in)
+                    .placeholder(R.drawable.store_logo)
+                    .error(R.drawable.store_logo)
+                    .animateIn(R.anim.abc_slide_in_top)
                     .load(item.getImage_url());
             
         }

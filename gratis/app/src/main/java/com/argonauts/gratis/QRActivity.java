@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Currency;
 
 import retrofit.Callback;
@@ -34,6 +39,7 @@ public class QRActivity extends Activity implements View.OnClickListener {
 
     static final int REWARD_REQUEST = 0x01;
     static final int PAY_REQUEST = 0x10;
+    static final int JOIN_REQUEST = 0x100;
     static String EXTRA_PAYMENT_STATUS = "payment_status";
 
     double price;
@@ -53,7 +59,6 @@ public class QRActivity extends Activity implements View.OnClickListener {
 
         findViewById(R.id.btn_scan).setOnClickListener(this);
         findViewById(R.id.btn_skip).setOnClickListener(this);
-        findViewById(R.id.btn_nfc_simulate).setOnClickListener(this);
 
         price = getIntent().getDoubleExtra(MainActivity.EXTRA_TOTAL_PRICE, 20.0);
 
@@ -62,7 +67,7 @@ public class QRActivity extends Activity implements View.OnClickListener {
 
         IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
         try {
-            ndef.addDataType("*/*");    /* Handles all MIME based dispatches.
+            ndef.addDataType("custom/gratis");    /* Handles all MIME based dispatches.
                                        You should specify only the ones that you need. */
         }
         catch (IntentFilter.MalformedMimeTypeException e) {
@@ -72,31 +77,54 @@ public class QRActivity extends Activity implements View.OnClickListener {
         techListsArray = new String[][] { new String[] { NfcF.class.getName() } };
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if(mAdapter!=null)
+            mAdapter.setNdefPushMessage(null, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(pendingIntent==null) {
-            Log.d(tag, "Pending intent");
-        }
-
-        if(intentFiltersArray==null) {
-            Log.d(tag, "Filter intent");
-        }
-
-        if(techListsArray==null) {
-            Log.d(tag, "Techlist intent");
-        }
-
-        mAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
+        if(mAdapter!=null)
+            mAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        startActivityForResult(new Intent(this, RewardActivity.class), REWARD_REQUEST);
+
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+
+        if(rawMsgs!=null){
+            for (int i = 0; i < rawMsgs.length; i++) {
+                for(NdefRecord r : ((NdefMessage)rawMsgs[i]).getRecords()){
+                    String msg = new String(r.getPayload());
+
+                    if(msg.contains("ID_")) {
+                        String id = msg.split("_")[1];
+
+                        Log.d(tag, "Looking for customer: " + id);
+                        // Call DB.
+                        RestClient.get().getCustomer(id, new Callback<Customer>() {
+                            @Override
+                            public void failure(RetrofitError arg0) {
+                                Log.d(tag, "Couldn't find customer");
+                                startActivityForResult(new Intent(getApplicationContext(), JoinActivity.class), JOIN_REQUEST);
+                            }
+
+                            @Override
+                            public void success(Customer arg0, Response arg1) {
+                                Log.d(tag, "Found customer: " + arg0.getName());
+                                startActivityForResult(new Intent(getApplicationContext(), RewardActivity.class), REWARD_REQUEST);
+                            }
+
+                        });
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
@@ -109,7 +137,8 @@ public class QRActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onPause() {
         super.onPause();
-        mAdapter.disableForegroundDispatch(this);
+        if(mAdapter!=null)
+            mAdapter.disableForegroundDispatch(this);
     }
 
     @Override
@@ -117,12 +146,6 @@ public class QRActivity extends Activity implements View.OnClickListener {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -130,9 +153,8 @@ public class QRActivity extends Activity implements View.OnClickListener {
     // Callback function for scan result.
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
-        if (requestCode == REWARD_REQUEST) {
+        if (requestCode == REWARD_REQUEST || requestCode == JOIN_REQUEST) {
             pay();
-            return;
         }else if (requestCode == PAY_REQUEST) {
             Log.d(tag, "Pay request");
             System.err.println("QRCODE HERE");
@@ -161,35 +183,36 @@ public class QRActivity extends Activity implements View.OnClickListener {
             RestClient.get().getCustomer(result, new Callback<Customer>() {
                 @Override
                 public void failure(RetrofitError arg0) {
-                    // TODO Auto-generated method stub
-
+                    Log.d(tag, "Couldn't find customer");
+                    startActivityForResult(new Intent(getApplicationContext(), JoinActivity.class), JOIN_REQUEST);
                 }
 
                 @Override
                 public void success(Customer arg0, Response arg1) {
-                    Log.i("App", "Individual customer: " + arg0.getName());
+                    Log.d(tag, "Found customer: " + arg0.getName());
+                    startActivityForResult(new Intent(getApplicationContext(), RewardActivity.class), REWARD_REQUEST);
                 }
-            });
-            // Update text.
-            TextView myAwesomeTextView = (TextView) findViewById(R.id.scan_content);
-            myAwesomeTextView.setText(result);
 
-            // Go to YOU CLUCKING LEGEND PAGE
-            startActivityForResult(new Intent(this, RewardActivity.class), REWARD_REQUEST);
+            });
         }
 
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
     public void pay() {
-        // Construct a new payment for $20.00.
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Construct a new payment for $20.00.
+                DecimalFormat df = new DecimalFormat("#.##");
+                PaymentRequest payment = new PaymentRequest(new BigDecimal(df.format(price)));
+                payment.setCurrency(Currency.getInstance("AUD"));
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        PaymentRequest payment = new PaymentRequest(new BigDecimal(df.format(price)));
-        payment.setCurrency(Currency.getInstance("AUD"));
-
-        // Launch the Payment app.
-        startActivityForResult(payment.createIntent(), PAY_REQUEST);
+                // Launch the Payment app.
+                startActivityForResult(payment.createIntent(), PAY_REQUEST);
+            }
+        }, 100);
     }
 
     @Override
@@ -201,9 +224,6 @@ public class QRActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_skip:
                 pay();
-                break;
-            case R.id.btn_nfc_simulate:
-                startActivityForResult(new Intent(this, RewardActivity.class), REWARD_REQUEST);
                 break;
 
         }
