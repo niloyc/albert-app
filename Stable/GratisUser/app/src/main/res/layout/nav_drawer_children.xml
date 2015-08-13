@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_drawer_children"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="#E65100"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:paddingTop="15dp">
+
+    <LinearLayout
+        android:id="@+id/layout_no_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/txt_no_qr"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="No QR Code linked"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_link_qr"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="#ff646464"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Link QR Code"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_qr"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center" />
+
+</RelativeLayout>
