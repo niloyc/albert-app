@@ -6,4 +6,5 @@
     <string name="scan">Scan</string>
     <string name="userInputError">Input Error</string>
     <string name="title_activity_reward">RewardActivity</string>
+    <string name="title_activity_order">OrderActivity</string>
 </resources>
