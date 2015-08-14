@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.argonauts.gratisuser.util.Customer;
+import com.argonauts.gratisuser.util.RestClient;
 import com.argonauts.gratisuser.util.Utilities;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -28,8 +30,12 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.LinkedList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class MainActivity extends Activity implements View.OnClickListener {
-    public static String tag = "NICK";
+    public static String tag = ".MainActivity";
     private static final String PREFS_NAME = "GratisUserPrefs";
 
     private String user_id = "";
@@ -65,7 +71,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             layoutNoQR.setVisibility(View.GONE);
         }
 
-        Log.d(MainActivity.tag, "ma i think user_id is " + user_id);
+        Log.d(MainActivity.tag, "User ID: " + user_id);
         // Set the offer list.
         ListView offerList = (ListView) findViewById(R.id.list_offers);
         // this should be from a REST call:
@@ -79,7 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 offers));
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
-        mMessage = new NdefMessage(NdefRecord.createMime("text/plain", user_id.getBytes()));
+        mMessage = new NdefMessage(NdefRecord.createMime("custom/gratis", ("ID_" + user_id).getBytes()));
         mAdapter.setNdefPushMessage(mMessage, this);
 
         Utilities.loadFonts(getApplicationContext());
@@ -144,6 +150,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
             qrImage.setVisibility(View.VISIBLE);
             qrImage.setImageBitmap(createQRImage(user_id));
             layoutNoQR.setVisibility(View.GONE);
+
+            Customer c = new Customer(user_id, "Daniel C", 100);
+            RestClient.get().addCustomer(c, new Callback<List<Customer>>() {
+                @Override
+                public void success(List<Customer> customers, Response response) {
+                    Log.d(tag, "Success! Added customer");
+                }
+
+                @Override
+                public void failure(RetrofitError retrofitError) {
+                    Log.d(tag, "Failed! Customer not added");
+                }
+            });
+
+            mMessage = new NdefMessage(NdefRecord.createMime("custom/gratis", ("ID_" + user_id).getBytes())); //Change nfc message
+            mAdapter.setNdefPushMessage(mMessage, this);
         }
     }
 

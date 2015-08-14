@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-    
+    android:orientation="horizontal"
+    android:background="@color/tertiaryForegroundColor">
+
     <ImageView
         android:id="@+id/img_item"
         android:layout_width="100dp"
@@ -16,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:orientation="vertical" 
+        android:orientation="vertical"
         android:layout_weight="10" >
 
         <TextView
@@ -30,8 +31,8 @@
             android:gravity="bottom"
             android:singleLine="true"
             android:text="test"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -42,9 +43,9 @@
             android:layout_weight="1"
             android:gravity="top"
             android:text="test"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="italic" />
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="22sp"
+            android:textStyle="bold|italic" />
     </LinearLayout>
 
     <TextView
@@ -53,8 +54,8 @@
         android:layout_height="fill_parent"
         android:gravity="center_vertical|left"
         android:paddingRight="10dp"
-        android:text="$10"
-        android:textColor="@android:color/white"
+        android:text="$10.00"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="24sp"
         android:textStyle="bold" />
 

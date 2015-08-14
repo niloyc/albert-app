@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background"
+    android:orientation="vertical">
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:dragView="@+id/dragView"
+        sothree:overlay="false"
+        sothree:panelHeight="80dp"
+        sothree:shadowHeight="4dp">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".MainActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/primaryForegroundColor">
+                <TextView
+                    android:id="@+id/text_items_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+
+                    android:layout_weight="0"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="15dp"
+                    android:text="Inventory"
+                    android:textColor="@android:color/white"
+                    android:textSize="34sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                
+                <Button
+                    android:layout_marginRight="20dp"
+                    android:padding="5dp"
+                    android:id="@+id/btn_back"
+                    android:layout_width="100dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:textColor="@color/primaryTextColor"
+                    android:text="Back"/>
+
+            </LinearLayout>
+
+
+
+            <GridView
+                android:id="@+id/itemGridList"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="15dp"
+                android:columnWidth="180dp"
+                android:gravity="center_vertical"
+                android:horizontalSpacing="2dp"
+                android:numColumns="3"
+                android:stretchMode="spacingWidthUniform"
+                android:verticalSpacing="15dp"></GridView>
+
+        </LinearLayout>
+
+        <include layout="@layout/slidingup_panel_contents" />
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</LinearLayout>

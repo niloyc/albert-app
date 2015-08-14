@@ -5,30 +5,53 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class RewardActivity extends Activity {
+public class JoinActivity extends Activity {
+
+    private static String tag = ".JoinActivity";
+
+    Timer timer;
+    int time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reward);
+        setContentView(R.layout.activity_join);
         setResult(RESULT_OK);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
+        time = 5;
+        ((TextView)findViewById(R.id.txt_join_timer)).setText("Preparing payment screen " + time + "...");
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             public void run() {
-                showDialog();
+                JoinActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(time<=1){
+                            timer.cancel();
+                            timer.purge();
+                            onBackPressed();
+                        }
+
+                        if(time>0)
+                            ((TextView)findViewById(R.id.txt_join_timer)).setText("Preparing payment screen " + --time + "...");
+                    }
+                });
             }
-        }, 4000);
+        }, 1000, 1000);
     }
 
     @Override
