@@ -51,20 +51,30 @@ body {
 }
 
 .item-button {
+    display: none;
+    animation: fadeIn 400ms;
+}
+
+.item:hover .item-button {
+    display: block;
+}
+
+.item-button {
     position: absolute;
-    color: lightgray;
+    color: white;
     font-size: 22pt;
+    text-shadow: 0px 0px 5px black;
 }
 
 .edit-item {
-    font-size: 18pt;
-    bottom: 5pt;
-    left: 12pt;
+    font-size: 22pt;
+    top: 12pt;
+    left: 14pt;
 }
 
 .delete-item {
-    bottom: 2pt;
-    right: 10pt;
+    top: 12pt;
+    right: 12pt;
 }
 
 .delete-item:hover {
