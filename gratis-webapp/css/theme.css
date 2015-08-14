@@ -36,18 +36,21 @@ body {
 }
 
 .thumbnail {
-    min-height: 227px;
     padding: 0;
     margin: 0;
     display: block;
     vertical-align: middle;
-    line-height: 227px;
     font-size: 100px;
     color: gainsboro;
 }
 
 .thumbnail:hover {
     text-decoration: none;
+}
+
+.add-button {
+    line-height: 300px;
+    min-height: 300px;
 }
 
 .item-button {
