@@ -59,6 +59,10 @@
             $http.delete('http://scribbler.io:3000/api/items/' + item.id);
         };
         
+        $scope.clearEditItem = function() {
+            $scope.edit_item = {};
+        }
+        
         $scope.setAddItemOn = function(on) {
             if (!on) {
                 $scope.edit_item = {};
@@ -158,7 +162,9 @@
             }
             $scope.edit_item.parent = $scope.breadcrumbs[0].id;
             if ($scope.edit) {
-                $http.put('http://scribbler.io:3000/api/items/' + $scope.edit_item.id, $scope.edit_item);
+                $http.put('http://scribbler.io:3000/api/items/' + $scope.edit_item.id, $scope.edit_item).success(function(data) {
+                    $scope.setAddItemOn(false);
+                });
             }
             else {
                 $http.post('http://scribbler.io:3000/api/items/', $scope.edit_item).success(function(data) {
@@ -166,7 +172,9 @@
                     $scope.edit_item.id = data.id;
                     $scope.items.push($scope.edit_item);
                     $scope.refreshTree();
-                    $scope.edit_item = {};
+                    
+                    // Must perform clear in parent scope to avoid assigning new locally scoped edit_item
+                    $scope.clearEditItem();
                 });
             }
         }
