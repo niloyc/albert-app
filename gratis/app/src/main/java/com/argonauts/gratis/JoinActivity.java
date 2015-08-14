@@ -32,7 +32,7 @@ public class JoinActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        time = 5;
+        time = 10;
         ((TextView)findViewById(R.id.txt_join_timer)).setText("Preparing payment screen " + time + "...");
         timer = new Timer();
         timer.schedule(new TimerTask() {

@@ -76,39 +76,46 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 
         orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, orderItems));
 
-        currentItems.clear();
+        if(currentItems.isEmpty()) {
 
-        RestClient.get().getItems(new Callback<List<Item>>() {
-            @Override
-            public void success(List<Item> items, Response response) {
+            RestClient.get().getItems(new Callback<List<Item>>() {
+                @Override
+                public void success(List<Item> items, Response response) {
 
-                allItems = items;
+                    allItems = items;
 
-                for (Item i : items) {
-                    if (i.getParent().equals("root")) {
-                        currentItems.add(i);
+                    for (Item i : items) {
+                        if (i.getParent().equals("root")) {
+                            currentItems.add(i);
+                        }
                     }
+
+                    itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
+                            R.layout.menu_item,
+                            currentItems));
+
                 }
 
-                itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
-                        R.layout.menu_item,
-                        currentItems));
-
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.d(tag, retrofitError.getMessage());
-            }
-        });
+                @Override
+                public void failure(RetrofitError retrofitError) {
+                    Log.d(tag, retrofitError.getMessage());
+                }
+            });
+        }
 
         itemList.setOnItemClickListener(this);
+        orderItemList.setOnItemClickListener(this);
         title = (TextView) findViewById(R.id.text_order_title);
         confirmButton = (Button) findViewById(R.id.btn_confirm_order);
         findViewById(R.id.btn_back).setOnClickListener(this);
-        findViewById(R.id.btn_back).setVisibility(View.GONE);
+
+        if(itemStack.isEmpty())
+            findViewById(R.id.btn_back).setVisibility(View.GONE);
+
         confirmButton.setOnClickListener(this);
-        confirmButton.setVisibility(View.GONE);
+        double totalPrice = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
+        if(totalPrice<=0.0)
+            confirmButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -218,44 +225,68 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-        ItemListAdapter adapter = (ItemListAdapter) adapterView.getAdapter();
-        Item item = adapter.getItem(index);
 
-        //item is a category
-        if (item.is_cat()) {
-            itemStack.push(currentItems);
-            currentItems = new ArrayList<>();
+        if(adapterView.getId()==R.id.itemGridList) {
+            ItemListAdapter adapter = (ItemListAdapter) adapterView.getAdapter();
+            Item item = adapter.getItem(index);
 
-            for(Item i: allItems){
-                if(i.getParent().equals(item.getId())){
-                    currentItems.add(i);
+            //item is a category
+            if (item.is_cat()) {
+                itemStack.push(currentItems);
+                currentItems = new ArrayList<>();
+
+                for (Item i : allItems) {
+                    if (i.getParent().equals(item.getId())) {
+                        currentItems.add(i);
+                    }
                 }
+
+                itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
+                        R.layout.menu_item,
+                        currentItems));
+
+                findViewById(R.id.btn_back).setVisibility(View.VISIBLE);
+                return;
             }
 
-            itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
-                    R.layout.menu_item,
-                    currentItems));
+            //Item is not a category
+            if (orderItems.contains(item)) {
+                int qty = orderItems.get(orderItems.indexOf(item)).getQuantity();
+                orderItems.get(orderItems.indexOf(item)).setQuantity(qty + 1);
+            } else {
+                item.setQuantity(1);
+                orderItems.add(item);
+            }
 
-            findViewById(R.id.btn_back).setVisibility(View.VISIBLE);
-            return;
+            ((OrderListAdapter) orderItemList.getAdapter()).notifyDataSetChanged();
+
+            double totalPrice = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
+            totalPrice += item.getPrice();
+            DecimalFormat df = new DecimalFormat("0.00");
+            ((TextView) findViewById(R.id.text_total)).setText(df.format(totalPrice));
+
+            confirmButton.setVisibility(View.VISIBLE);
+        }else if(adapterView.getId()==R.id.orderItemList){
+            OrderListAdapter adapter = (OrderListAdapter) adapterView.getAdapter();
+            Item item = adapter.getItem(index);
+
+            if(item.getQuantity()>1){
+                item.setQuantity(item.getQuantity()-1);
+            }else{
+                orderItems.remove(item);
+            }
+
+            double totalPrice = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
+            totalPrice -= item.getPrice();
+            DecimalFormat df = new DecimalFormat("0.00");
+            ((TextView) findViewById(R.id.text_total)).setText(df.format(totalPrice));
+
+            adapter.notifyDataSetChanged();
+
+            if(totalPrice<=0){
+                Button confirm = (Button) findViewById(R.id.btn_confirm_order);
+                confirm.setVisibility(View.GONE);
+            }
         }
-
-        //Item is not a category
-        if (orderItems.contains(item)) {
-            int qty = orderItems.get(orderItems.indexOf(item)).getQuantity();
-            orderItems.get(orderItems.indexOf(item)).setQuantity(qty + 1);
-        } else {
-            item.setQuantity(1);
-            orderItems.add(item);
-        }
-
-        ((OrderListAdapter) orderItemList.getAdapter()).notifyDataSetChanged();
-
-        double totalPrice = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
-        totalPrice += item.getPrice();
-        DecimalFormat df = new DecimalFormat("0.00");
-        ((TextView) findViewById(R.id.text_total)).setText(df.format(totalPrice));
-
-        confirmButton.setVisibility(View.VISIBLE);
     }
 }

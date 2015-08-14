@@ -48,6 +48,12 @@
             android:textStyle="bold|italic" />
     </LinearLayout>
 
+    <ImageView
+        android:padding="15dp"
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        android:src="@drawable/subtract_icon"/>
+
     <TextView
         android:id="@+id/text_item_price"
         android:layout_width="100dp"
