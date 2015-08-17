@@ -1,9 +1,19 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
+var http = require('http');
 var https = require('https');
 var sslConfig = require('./ssl-config');
 
 var app = module.exports = loopback();
+
+app.use(function requireHTTPS(req, res, next) {
+  if (!req.secure) {
+    return res.redirect('https://' + req.headers.host + req.url);
+  }
+  next();
+});
+
+http.createServer(app).listen(8080);
 
 app.start = function() {
   console.log('Starting...');
