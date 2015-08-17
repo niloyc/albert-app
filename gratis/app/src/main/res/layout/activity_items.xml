@@ -24,6 +24,7 @@
             tools:context=".MainActivity">
 
             <LinearLayout
+                android:id="@+id/title_banner"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:background="@color/primaryForegroundColor">
@@ -44,7 +45,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                   />
                 
                 <Button
                     android:layout_marginRight="20dp"

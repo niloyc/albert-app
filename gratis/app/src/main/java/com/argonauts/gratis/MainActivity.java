@@ -27,88 +27,30 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends Activity implements OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements OnClickListener{
 
-    public static final int HANDLE_LOYALTY_PAYMENT = 0x100;
-    static final String EXTRA_TOTAL_PRICE = "total_price";
     private static String tag = ".MainActivity";
-    private Button confirmButton;
-    private TextView title;
+    public static Theme theme;
 
-    private ListView orderItemList;
-    private GridView itemList;
-    private List<Item> orderItems;
-    private List<Item> currentItems;
-    private List<Item> allItems;
-    private Stack<List<Item>> itemStack;
-
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    };
-
+    private Button btn_theme1;
+    private Button btn_theme2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_items);
-        Log.d(tag, "Started KFCAlbert");
-
-        orderItems = new ArrayList<>();
-        currentItems = new ArrayList<>();
-        itemStack = new Stack<>();
+        setContentView(R.layout.activity_theme);
+        // Get buttons.
+        btn_theme1 = (Button) findViewById(R.id.btn_theme1);
+        btn_theme2 = (Button) findViewById(R.id.btn_theme2);
+        btn_theme1.setOnClickListener(this);
+        btn_theme2.setOnClickListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds Items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        itemList = (GridView) findViewById(R.id.itemGridList);
-        orderItemList = (ListView) findViewById(R.id.orderItemList);
-
-        orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, orderItems));
-
-        currentItems.clear();
-
-        RestClient.get().getItems(new Callback<List<Item>>() {
-            @Override
-            public void success(List<Item> items, Response response) {
-
-                allItems = items;
-
-                for (Item i : items) {
-                    if (i.getParent().equals("root")) {
-                        currentItems.add(i);
-                    }
-                }
-
-                itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
-                        R.layout.menu_item,
-                        currentItems));
-
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.d(tag, retrofitError.getMessage());
-            }
-        });
-
-        itemList.setOnItemClickListener(this);
-        title = (TextView) findViewById(R.id.text_order_title);
-        confirmButton = (Button) findViewById(R.id.btn_confirm_order);
-        findViewById(R.id.btn_back).setOnClickListener(this);
-        findViewById(R.id.btn_back).setVisibility(View.GONE);
-        confirmButton.setOnClickListener(this);
-        confirmButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -117,145 +59,50 @@ public class MainActivity extends Activity implements OnClickListener, AdapterVi
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        Intent intent = new Intent(this, ItemsActivity.class);
         switch (id) {
-            case R.id.btn_confirm_order:
-                Log.d(tag, "Order Confirmed");
-                double total = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
-                Intent intent = new Intent(this, QRActivity.class);
-                intent.putExtra(EXTRA_TOTAL_PRICE, total);
-                startActivityForResult(intent, HANDLE_LOYALTY_PAYMENT);
+            case R.id.btn_theme1:
+                Log.d(tag, "Theme 1 pressed");
+                // Create a theme.
+                theme = new Theme();
+                // Start the items activity.
+                startActivity(intent);
                 break;
-            case R.id.btn_back:
-                traverseBack();
-                break;
-        }
-    }
-
-    private void traverseBack(){
-        if(!itemStack.isEmpty()){
-            currentItems = itemStack.pop();
-            itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
-                    R.layout.menu_item,
-                    currentItems));
-        }
-
-        if(itemStack.isEmpty())
-            findViewById(R.id.btn_back).setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(!itemStack.isEmpty())
-            traverseBack();
-        else
-            super.onBackPressed();
-    }
-
-    private void resetOrder() {
-
-        itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
-                R.layout.menu_item,
-                currentItems));
-        ((TextView) findViewById(R.id.text_total)).setText("0.00");
-        ((OrderListAdapter) orderItemList.getAdapter()).clear();
-        ((OrderListAdapter) orderItemList.getAdapter()).notifyDataSetChanged();
-
-        confirmButton.setVisibility(View.GONE);
-        orderItems.clear();
-        orderItemList.setAdapter(new OrderListAdapter(getApplicationContext(), R.layout.order_item, orderItems));
-
-        title.setText("Order");
-        confirmButton.setText("Confirm Order");
-        confirmButton.setBackgroundColor(Color.parseColor("#4CAF50"));
-        title.setBackgroundColor(getResources().getColor(R.color.primaryForegroundColor));
-        confirmButton.setEnabled(true);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        switch (requestCode) {
-            case HANDLE_LOYALTY_PAYMENT:
-                Button confirm = (Button) findViewById(R.id.btn_confirm_order);
-                confirm.setEnabled(false);
-                TextView title = (TextView) findViewById(R.id.text_order_title);
-                if (resultCode == Activity.RESULT_OK) {
-                    title.setText("Order Complete");
-                    confirm.setText("Please wait to collect");
-                    confirm.setBackgroundColor(Color.parseColor("#FF0F9D58"));
-                    title.setBackgroundColor(Color.parseColor("#FF0F9D58"));
-                } else {
-                    Toast.makeText(this, "Unsuccessful payment", Toast.LENGTH_SHORT).show();
-                    title.setText("Order Failed");
-                    confirm.setText("Payment Failed");
-                    confirm.setBackgroundColor(Color.parseColor("#AA0000"));
-                    title.setBackgroundColor(Color.parseColor("#AA0000"));
-                }
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        resetOrder();
-                    }
-                }, 6000);
-
+            case R.id.btn_theme2:
+                Log.d(tag, "Theme 2 pressed");
+                // Create a theme.
+                theme = new Theme();
+                theme.title_banner_color = 0xFF9FF781;
+                theme.title_banner_text_size = 15;
+                theme.title_banner_text_color = 0xFF000000;
+                theme.title_banner_text = "1nv3nt0ry";
+                theme.title_banner_back_btn_released_color = 0xFF666666;
+                theme.title_banner_back_btn_released_radius = 30;
+                theme.title_banner_back_btn_released_stroke_thickness = 2;
+                theme.title_banner_back_btn_released_stroke_color = 0xFFFFFFFF;
+                theme.title_banner_back_btn_released_text_color = 0xFF000000;
+                theme.title_banner_back_btn_released_text_size = 20;
+                theme.slider_banner_background_color = 0xFFFFFFFF;
+                theme.slider_banner_color = 0xFFFF0000;
+                //slider_banner_logo = ;
+                theme.slider_banner_text = "0rd3r T0t4l";
+                theme.slider_banner_text_size = 15;
+                theme.slider_banner_text_color = 0xFF0000FF;
+                // Start the items activity.
+                startActivity(intent);
                 break;
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-        ItemListAdapter adapter = (ItemListAdapter) adapterView.getAdapter();
-        Item item = adapter.getItem(index);
-
-        //item is a category
-        if (item.is_cat()) {
-            itemStack.push(currentItems);
-            currentItems = new ArrayList<>();
-
-            for(Item i: allItems){
-                if(i.getParent().equals(item.getId())){
-                    currentItems.add(i);
-                }
-            }
-
-            itemList.setAdapter(new ItemListAdapter(getApplicationContext(),
-                    R.layout.menu_item,
-                    currentItems));
-
-            findViewById(R.id.btn_back).setVisibility(View.VISIBLE);
-            return;
-        }
-
-        //Item is not a category
-        if (orderItems.contains(item)) {
-            int qty = orderItems.get(orderItems.indexOf(item)).getQuantity();
-            orderItems.get(orderItems.indexOf(item)).setQuantity(qty + 1);
-        } else {
-            item.setQuantity(1);
-            orderItems.add(item);
-        }
-
-        ((OrderListAdapter) orderItemList.getAdapter()).notifyDataSetChanged();
-
-        double totalPrice = Double.parseDouble(((TextView) findViewById(R.id.text_total)).getText().toString());
-        totalPrice += item.getPrice();
-        DecimalFormat df = new DecimalFormat("0.00");
-        ((TextView) findViewById(R.id.text_total)).setText(df.format(totalPrice));
-
-        confirmButton.setVisibility(View.VISIBLE);
     }
 }

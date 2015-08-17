@@ -28,7 +28,7 @@ public class RewardActivity extends Activity {
             public void run() {
                 showDialog();
             }
-        }, 4000);
+        }, 8000);
     }
 
     @Override
