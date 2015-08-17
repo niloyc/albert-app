@@ -1,7 +1,8 @@
 {
   "restApiRoot": "/api",
   "host": "0.0.0.0",
-  "port": 8080,
+  "port": 8443,
+  "url": "https://localhost:8443/",
   "remoting": {
     "context": {
       "enableHttpContext": false
