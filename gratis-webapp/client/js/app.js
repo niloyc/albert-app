@@ -67,7 +67,7 @@
             console.log(index);
             $scope.items.splice(index, 1);
             $scope.refreshTree();
-            $http.delete('http://getgratis.co/api/items/' + item.id);
+            $http.delete('https://getgratis.co/api/items/' + item.id);
         };
         
         $scope.clearEditItem = function() {
@@ -89,7 +89,7 @@
             return $scope.addItemOn;
         }
         
-        $http.get('http://getgratis.co/api/items').success(function(data) {
+        $http.get('https://getgratis.co/api/items').success(function(data) {
             $scope.items = data;
             $scope.moveTreeTo($scope.root_item);
             console.log($scope.items);
@@ -136,11 +136,11 @@
         $scope.product_labels = ['Coffee', 'Eclair', 'Donut', 'Chai Latte', 'Tea'];
         $scope.product_data = [[100, 50, 69, 200, 30]];
         
-        $http.get('http://getgratis.co/api/customers/').success(function(data) {
+        $http.get('https://getgratis.co/api/customers/').success(function(data) {
             $scope.customers = data;
         });
         
-        $http.get('http://getgratis.co/api/orders/').success(function(data) {
+        $http.get('https://getgratis.co/api/orders/').success(function(data) {
             $scope.orders = data;
             $scope.order_item_names = data.map(function(a) {return a.items.map(function(b){return b.name})});
             $scope.order_item_quantities = data.map(function(a) {return a.items.map(function(b){return b.quantity})});
@@ -151,7 +151,7 @@
     
     app.controller('AddCustomerCtrl', function($scope, $http) {
         $scope.addCustomer = function(user) {
-            $http.post('http://getgratis.co/api/customers/', user).success(function(data) {
+            $http.post('https://getgratis.co/api/customers/', user).success(function(data) {
                 user.name = '';
                 user.points = 0;
             });
@@ -176,12 +176,12 @@
             }
             $scope.edit_item.parent = $scope.breadcrumbs[0].id;
             if ($scope.edit) {
-                $http.put('http://getgratis.co/api/items/' + $scope.edit_item.id, $scope.edit_item).success(function(data) {
+                $http.put('https://getgratis.co/api/items/' + $scope.edit_item.id, $scope.edit_item).success(function(data) {
                     //$scope.setAddItemOn(false);
                 });
             }
             else {
-                $http.post('http://getgratis.co/api/items/', $scope.edit_item).success(function(data) {
+                $http.post('https://getgratis.co/api/items/', $scope.edit_item).success(function(data) {
                     // To make deletion work, we need to place the generated id into the local object
                     $scope.edit_item.id = data.id;
                     $scope.items.push($scope.edit_item);
