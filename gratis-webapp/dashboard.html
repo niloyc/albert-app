@@ -86,11 +86,11 @@
                                         </div>
                                         <div class="form-group" ng-if="!isCategory()">
                                             <label for="item_price" class="control-label">Price</label>
-                                            <input type="number" id="item_price" class="form-control" ng-model="edit_item.price" />
+                                            <input type="number" id="item_price" class="form-control" step="0.01" min="0" ng-model="edit_item.price" />
                                         </div>
                                         <div class="form-group" ng-if="!isCategory()">
                                             <label for="item_quantity" class="control-label">Stock quantity</label>
-                                            <input type="number" id="item_quantity" class="form-control" ng-model="edit_item.quantity" />
+                                            <input type="number" id="item_quantity" class="form-control" min="0" ng-model="edit_item.quantity" />
                                         </div>
                                         <div class="form-group">
                                             <label for="item_image_url" class="control-label">Image URL</label>

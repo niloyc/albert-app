@@ -6,6 +6,7 @@
         
         $scope.edit = false;
         $scope.edit_item = {};
+        $scope.edit_item_id = "";
         $scope.edit_item_copy = {};
         
         $scope.items = [];
@@ -46,8 +47,18 @@
         $scope.editItem = function(item) {
             $scope.edit = true;
             $scope.edit_item = item;
+            $scope.edit_item_id = item.id;
             $scope.edit_item_copy = JSON.parse(JSON.stringify(item));
             $scope.addItemOn = true;
+        }
+        
+        $scope.restoreEditItem = function() {
+            var index = $scope.items.indexOf($scope.edit_item);
+            console.log($scope.edit_item);
+            console.log(index);
+            console.log($scope.edit_item_copy);
+            $scope.items[index] = $scope.edit_item_copy;
+            $scope.refreshTree();
         }
         
         $scope.removeItem = function(item) {
@@ -65,6 +76,9 @@
         
         $scope.setAddItemOn = function(on) {
             if (!on) {
+                if ($scope.edit) {
+                    $scope.restoreEditItem();
+                }
                 $scope.edit_item = {};
                 $scope.edit = false;
             }
@@ -163,7 +177,7 @@
             $scope.edit_item.parent = $scope.breadcrumbs[0].id;
             if ($scope.edit) {
                 $http.put('http://scribbler.io:3000/api/items/' + $scope.edit_item.id, $scope.edit_item).success(function(data) {
-                    $scope.setAddItemOn(false);
+                    //$scope.setAddItemOn(false);
                 });
             }
             else {
