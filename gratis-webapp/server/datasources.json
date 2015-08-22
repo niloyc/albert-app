@@ -3,10 +3,6 @@
     "name": "db",
     "connector": "memory"
   },
-  "UserDB": {
-    "name": "UserDB",
-    "connector": "mongodb"
-  },
   "OrderDB": {
     "name": "OrderDB",
     "connector": "mongodb"
